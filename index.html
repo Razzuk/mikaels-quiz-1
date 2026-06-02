@@ -51,12 +51,6 @@
         <p id="task1-error" style="color:red; display:none;">Feil kode, prøv igjen!</p>
     </div>
 
-    <!-- SKJERM 3: Oppgave 2 -->
-    <div id="screen-task2" class="screen">
-        <h2>Oppgave 2</h2>
-        <p>Gratulerer! Dere klarte første oppgave og er ett skritt nærmere friheten.</p>
-        <p>(Her kommer neste oppgave senere...)</p>
-    </div>
 
     <div id="screen-task3" class="screen">
         <h2>Oppgave 3: Timeglasset</h2>
@@ -149,7 +143,7 @@
             // Sammenligner brukerens hash med fasit-hashen
             if (hashedAnswer === HASH_TASK1) {
                 errorEl.style.display = 'none';
-                goToScreen('screen-task4');
+                goToScreen('screen-task3');
             } else {
                 errorEl.style.display = 'block';
             }

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vårt Escape Room</title>
+    
+    <style>
+        /* CSS: Skjul alle elementer med klassen 'screen' som standard */
+        .screen {
+            display: none;
+        }
+        
+        /* CSS: Vis elementet DERSOM det også har klassen 'active' */
+        .screen.active {
+            display: block;
+        }
+        
+        /* Litt enkel styling for å gjøre det penere */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SKJERM 1: Startskjerm -->
+    <div id="screen-start" class="screen active">
+        <h1>Velkommen til Escape Room!</h1>
+        <p>Laget deres er låst inne. Dere må løse oppgavene for å komme ut.</p>
+        <button onclick="goToScreen('screen-task1')">Start spillet</button>
+    </div>
+
+    <!-- SKJERM 2: Oppgave 1 -->
+    <div id="screen-task1" class="screen">
+        <h2>Oppgave 1</h2>
+        <p>Hvilket ord får du hvis du stokker om bokstavene i ordet "S-L-O-O"?</p>
+        <!-- Inndatafelt for spilleren -->
+        <input type="text" id="task1-input" placeholder="Skriv svaret her">
+        <button onclick="validateTask1()">Sjekk svar</button>
+        <!-- Feilmelding som er skjult som standard -->
+        <p id="task1-error" style="color:red; display:none;">Feil kode, prøv igjen!</p>
+    </div>
+
+    <!-- SKJERM 3: Oppgave 2 -->
+    <div id="screen-task2" class="screen">
+        <h2>Oppgave 2</h2>
+        <p>Gratulerer! Dere klarte første oppgave og er ett skritt nærmere friheten.</p>
+        <p>(Her kommer neste oppgave senere...)</p>
+    </div>
+
+    <div id="screen-task3" class="screen">
+        <h2>Oppgave 3: Timeglasset</h2>
+        
+        <div id="task3-intro">
+            <p>Tiden renner ut! Utforsk enhetens tyngdekraft for å reversere prosessen.</p>
+            <button id="btn-start-task3" onclick="startTask3()">Aktiver timeglass</button>
+        </div>
+
+        <div id="task3-content" style="display:none;">
+            <div style="font-size: 50px;" id="hourglass-icon">⏳</div>
+            <div style="font-size: 40px; font-weight: bold;" id="timer-display">13:00</div>
+            <p>Måltall: 14:00</p>
+            
+            <div id="task3-success" style="display:none; color: lime; margin-top: 20px;">
+                <p>Du klarte det! Tiden ble reversert.</p>
+                <button onclick="goToScreen('screen-task4')">Gå til neste rom</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JAVASCRIPT: SPA Navigasjon (Uendret)
+        function goToScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+    
+        // JAVASCRIPT: Kryptografisk Hash-funksjon
+        async function sha256(message) {
+            // Konverterer strengen til en UTF-8 bytestrøm
+            const msgUint8 = new TextEncoder().encode(message); 
+            // Genererer selve hashen asynkront
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8); 
+            // Gjør om ArrayBuffer til et vanlig Array, og oversetter bytene til en heksadesimal streng
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+    
+        
+        const HASH_TASK1 = '8e016391c88c77d6773deab343b91f53bb64bfbc9ca18101844cb84c3d01e561';
+    
+        // JAVASCRIPT: Validere oppgave 1 (Nå som asynkron funksjon)
+        async function validateTask1() {
+            const inputEl = document.getElementById('task1-input');
+            const errorEl = document.getElementById('task1-error');
+            
+            // Saniterer teksten for unødvendige mellomrom og store bokstaver
+            const answer = inputEl.value.trim().toLowerCase();
+    
+            // Venter på at hashen skal beregnes
+            const hashedAnswer = await sha256(answer);
+    
+            // Sammenligner brukerens hash med fasit-hashen
+            if (hashedAnswer === HASH_TASK1) {
+                errorEl.style.display = 'none';
+                goToScreen('screen-task3');
+            } else {
+                errorEl.style.display = 'block';
+            }
+        }
+        let timeInSeconds = 13 * 60;
+        const TARGET_TIME = 14 * 60;
+        let isUpsideDown = false;
+        let timerInterval;
+
+        function startTask3() {
+            // ... resten av koden fra forrige melding ...
+        }
+
+        function initHourglass() {
+            // ... resten av koden fra forrige melding ...
+        }
+    </script>
+</body>
+</html>

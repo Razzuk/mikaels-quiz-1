@@ -160,11 +160,64 @@
         let timerInterval;
 
         function startTask3() {
-            // ... resten av koden fra forrige melding ...
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            initHourglass();
+                        } else {
+                            alert("Vi trenger tilgang til bevegelsessensoren for å løse gåten!");
+                        }
+                    })
+                    .catch(console.error);
+            } else {
+                // Enheter som ikke krever tillatelse
+                initHourglass();
+            }
         }
 
         function initHourglass() {
-            // ... resten av koden fra forrige melding ...
+            // Skjul introtekst og vis selve timeglasset
+            document.getElementById('task3-intro').style.display = 'none';
+            document.getElementById('task3-content').style.display = 'block';
+
+            // Lytt etter endringer i telefonens rotasjon
+            window.addEventListener('deviceorientation', (event) => {
+                // Hvis beta er under -45 grader, regnes telefonen som opp ned
+                if (event.beta < -45) {
+                    isUpsideDown = true;
+                    document.getElementById('hourglass-icon').style.transform = "rotate(180deg)"; // Visuell rotasjon
+                } else {
+                    isUpsideDown = false;
+                    document.getElementById('hourglass-icon').style.transform = "rotate(0deg)";
+                }
+            });
+
+            // Start en "game loop" som kjører hver 1000. millisekund (hvert sekund)
+            timerInterval = setInterval(() => {
+                // Logikken for timeglasset
+                if (isUpsideDown) {
+                    timeInSeconds++; // Reverserer tiden
+                } else {
+                    timeInSeconds--; // Tiden renner vanlig ut
+                }
+
+                // Formaterer tiden tilbake til mm:ss
+                let minutes = Math.floor(timeInSeconds / 60);
+                let seconds = timeInSeconds % 60;
+                let timeString = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+                
+                document.getElementById('timer-display').innerText = timeString;
+
+                // Sjekk om målet er nådd
+                if (timeInSeconds >= TARGET_TIME) {
+                    clearInterval(timerInterval); // Stopp klokken
+                    document.getElementById('task3-success').style.display = 'block';
+                } else if (timeInSeconds <= 0) {
+                    // Sørg for at tiden ikke går i minus
+                    timeInSeconds = 0; 
+                }
+            }, 1000); 
         }
         function toggleLights() {
             // Sjekker om boksen er krysset av

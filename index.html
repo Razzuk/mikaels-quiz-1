@@ -77,6 +77,38 @@
             </div>
         </div>
     </div>
+    <div id="screen-task4" class="screen">
+        <h2>Oppgave 4: Usynlig blekk</h2>
+        <p>Dere finner en innrammet plakat på veggen, men den virker helt blank. Kanskje dere bør skru av lyset?</p>
+
+        <!-- Boksen som representerer plakaten -->
+        <div style="position: relative; width: 100%; max-width: 400px; height: 250px; background-color: #ffffff; margin: 20px auto; border: 3px solid #444; border-radius: 8px; overflow: hidden;">
+
+            <!-- Den hemmelige koden (hvit på hvit bakgrunn) -->
+            <div id="secret-ink" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 45px; font-weight: bold; color: #ffffff; transition: color 0.3s, text-shadow 0.3s; z-index: 2;">
+                8421
+            </div>
+
+            <!-- Overlegget som mørklegger rommet via 'multiply' -->
+            <div id="darkness-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: transparent; mix-blend-mode: multiply; pointer-events: none; transition: background-color 0.3s; z-index: 3;"></div>
+        </div>
+
+        <!-- Avkrysningsboks som fungerer som lysbryter -->
+        <label style="cursor: pointer; font-size: 18px; display: inline-block; margin-bottom: 20px;">
+            <input type="checkbox" id="light-switch" onchange="toggleLights()"> 🔌 Skru av hovedlyset
+        </label>
+
+        <br>
+        <input type="text" id="task4-input" placeholder="Skriv inn tallkoden">
+        <button onclick="validateTask4()">Lås opp døren</button>
+        <p id="task4-error" style="color:red; display:none;">Feil kode, prøv igjen!</p>
+    </div>
+
+    <div id="screen-task5" class="screen">
+        <h2>Gratulerer! 🎉</h2>
+        <p>Dere låste opp den siste døren og kom dere ut av escape rommet!</p>
+    </div>
+
 
     <script>
         // JAVASCRIPT: SPA Navigasjon (Uendret)
@@ -133,6 +165,47 @@
 
         function initHourglass() {
             // ... resten av koden fra forrige melding ...
+        }
+        function toggleLights() {
+            // Sjekker om boksen er krysset av
+            const isLightOff = document.getElementById('light-switch').checked; 
+            const overlay = document.getElementById('darkness-overlay');
+            const secretInk = document.getElementById('secret-ink');
+
+            if (isLightOff) {
+                // Mørklegger plakaten med en lilla UV-farge ved hjelp av multiply-effekten
+                overlay.style.backgroundColor = '#1a0033';
+                
+                // Endrer fargen på den hvite teksten slik at den "gløder" i mørket
+                secretInk.style.color = '#00ffcc';
+                secretInk.style.textShadow = '0 0 15px #00ffcc';
+            } else {
+                // Skrur på lyset igjen ved å gjøre filteret gjennomsiktig
+                overlay.style.backgroundColor = 'transparent';
+                
+                // Gjør teksten usynlig igjen (hvit på hvit)
+                secretInk.style.color = '#ffffff';
+                secretInk.style.textShadow = 'none';
+            }
+        }
+
+        // SHA-256 hashen for løsningskoden "8421"
+        const HASH_TASK4 = 'fcd4e25bb2a919b986574a4432b396deccf6f119f1919efb4ce6e86e1227e9ac';
+
+        async function validateTask4() {
+            const inputEl = document.getElementById('task4-input');
+            const errorEl = document.getElementById('task4-error');
+            
+            const answer = inputEl.value.trim();
+            const hashedAnswer = await sha256(answer);
+            
+            if (hashedAnswer === HASH_TASK4) {
+                errorEl.style.display = 'none';
+                // Hvis koden er riktig, sendes de til den nye sluttskjermen!
+                goToScreen('screen-task5'); 
+            } else {
+                errorEl.style.display = 'block';
+            }
         }
     </script>
 </body>

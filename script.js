@@ -92,7 +92,6 @@ async function validateTask1() {
 // ==========================================
 //  (TIMEGLASS)
 // ==========================================
-let timeInSeconds = 13 * 60;
 let timeInSeconds = 60;
         const TARGET_TIME = 80;
         let isUpsideDown = false;

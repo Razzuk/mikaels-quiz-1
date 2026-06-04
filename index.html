@@ -15,7 +15,7 @@
     <div id="screen-start" class="screen active">
         <h1>Velkommen til Escape Room!</h1>
         <p>Laget deres er låst inne. Dere må løse oppgavene for å komme ut.</p>
-        <button onclick="goToScreen('screen-task1')">Start spillet</button>
+        <button onclick="advanceFrom('screen-start')">Start spillet</button>
     </div>
 
     <!-- ========================================== -->
@@ -39,7 +39,25 @@
     <!-- ========================================== -->
     <!-- OPPGAVE 3: TIMEGLASSET                     -->
     <!-- ========================================== -->
+    <div id="screen-task3" class="screen">
+        <h2>Oppgave 3: Timeglasset</h2>
+        
+        <div id="task3-intro">
+            <p>Julenissen har nesten gått tom for tid! Han har bare ett minutt igjen, men du kan hjelpe han! Bruk magi for å gi han et ekstra halvt minutt til å dele ut gaver.</p>
+            <button id="btn-start-task3" onclick="startTask3()">Aktiver timeglass</button>
+        </div>
 
+        <div id="task3-content" style="display:none;">
+            <div style="font-size: 200px;" id="hourglass-icon">⏳</div>
+            <div style="font-size: 40px; font-weight: bold;" id="timer-display">1:00</div>
+            <p>Målet: 1:30</p>
+            
+            <div id="task3-success" style="display:none; color: lime; margin-top: 20px;">
+                <p>Du klarte det! Tiden ble reversert.</p>
+                <button onclick="advanceFrom('screen-task3')">Gå til neste oppgave</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

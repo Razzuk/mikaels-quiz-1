@@ -3,29 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vårt Escape Room</title>
-
+    <title>Julequiz Escape Room</title>
+    <!-- Kobling til stilarket som skjuler inaktive skjermer og gir juledesign -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- SKJERM 1: Startskjerm -->
+    <!-- ========================================== -->
+    <!-- SKJERM 1: Startskjerm                      -->
+    <!-- ========================================== -->
     <div id="screen-start" class="screen active">
         <h1>Velkommen til Escape Room!</h1>
         <p>Laget deres er låst inne. Dere må løse oppgavene for å komme ut.</p>
-        <button onclick="goToScreen('screen-task1')">Start spillet</button>
+        <button onclick="advanceFrom('screen-start')">Start spillet</button>
     </div>
 
-    <!-- SKJERM 2: Oppgave 1 -->
+    <!-- ========================================== -->
+    <!-- SKJERM 2: Oppgave 1 (Veidele)              -->
+    <!-- ========================================== -->
     <div id="screen-task1" class="screen">
         <h2>Oppgave 1</h2>
         <p>Hvilket ord får du hvis du stokker om bokstavene i ordet "S-L-O-O"?</p>
-        <!-- Inndatafelt for spilleren -->
         <input type="text" id="task1-input" placeholder="Skriv svaret her">
         <button onclick="validateTask1()">Sjekk svar</button>
-        <!-- Feilmelding som er skjult som standard -->
-        <p id="task1-error" style="color:red; display:none;">Feil kode, prøv igjen!</p>
+        <p id="task1-error" style="color: #ff6b6b; display: none;">Feil kode, prøv igjen!</p>
     </div>
-<!-- ========================================== -->
+
+    <!-- ========================================== -->
     <!-- SPOR A (OSLO-VEIEN)                        -->
     <!-- ========================================== -->
 
@@ -87,56 +91,30 @@
         <p id="task4b-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "b4".</p>
     </div>
 
+    <!-- ========================================== -->
+    <!-- OPPGAVE 5: TIMEGLASSET (FELLES MØTEPUNKT)  -->
+    <!-- ========================================== -->
     <div id="screen-task5" class="screen">
         <h2>Oppgave 5: Timeglasset</h2>
         
-        <div id="task3-intro">
+        <div id="task5-intro">
             <p>Tiden renner ut! Utforsk enhetens tyngdekraft for å reversere prosessen.</p>
-            <button id="btn-start-task3" onclick="startTask3()">Aktiver timeglass</button>
+            <button id="btn-start-task5" onclick="startTask5()">Aktiver timeglass</button>
         </div>
 
-        <div id="task3-content" style="display:none;">
+        <div id="task5-content" style="display: none;">
             <div style="font-size: 50px;" id="hourglass-icon">⏳</div>
             <div style="font-size: 40px; font-weight: bold;" id="timer-display">13:00</div>
             <p>Måltall: 14:00</p>
             
-            <div id="task3-success" style="display:none; color: lime; margin-top: 20px;">
+            <div id="task5-success" style="display: none; color: lime; margin-top: 20px;">
                 <p>Du klarte det! Tiden ble reversert.</p>
-                <button onclick="goToScreen('screen-task4')">Gå til neste rom</button>
+                <button onclick="advanceFrom('screen-task5')">Gå til Oppgave 6</button>
             </div>
         </div>
     </div>
-   
 
-    <script>
-        // JAVASCRIPT: SPA Navigasjon (Uendret)
-        function goToScreen(screenId) {
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
-        }
-    
-        // JAVASCRIPT: Kryptografisk Hash-funksjon
-        async function sha256(message) {
-            // Konverterer strengen til en UTF-8 bytestrøm
-            const msgUint8 = new TextEncoder().encode(message); 
-            // Genererer selve hashen asynkront
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8); 
-            // Gjør om ArrayBuffer til et vanlig Array, og oversetter bytene til en heksadesimal streng
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
-    
-        
-      
-        let timeInSeconds = 60;
-        const TARGET_TIME = 80;
-        let isUpsideDown = false;
-        let timerInterval;
-<!-- ========================================== -->
+    <!-- ========================================== -->
     <!-- OPPGAVE 6: FLAPPY SANTA (30 POENG)         -->
     <!-- ========================================== -->
     <div id="screen-task6" class="screen">
@@ -144,18 +122,15 @@
         <p>Hjelp nissen trygt gjennom nattehimmelen. Trykk på skjermen for å flakse!</p>
         <p><strong>Mål: Få minst 30 poeng for å låse opp neste dør.</strong></p>
 
-        <!-- Selve spillområdet -->
         <div style="position: relative; display: inline-block;">
             <canvas id="flappy-canvas" width="320" height="420" style="border: 2px solid #ffd700; border-radius: 8px; background: #071326; display: block; margin: 0 auto;"></canvas>
             
-            <!-- Spillmeny ved start og tap -->
             <div id="flappy-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 8px;">
                 <p id="flappy-msg" style="font-size: 20px; font-weight: bold; color: #ffd700; margin-bottom: 10px;">Klar til avgang?</p>
                 <button onclick="startFlappyGame()">Start flyvningen</button>
             </div>
         </div>
 
-        <!-- Vises automatisk når 30 poeng er nådd -->
         <div id="task6-success" style="display: none; margin-top: 15px;">
             <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Fantastisk! 30 poeng nådd!</p>
             <button onclick="advanceFrom('screen-task6')">Gå til Oppgave 7</button>
@@ -163,115 +138,16 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- OPPGAVE 7 (Midlertidig plassholder)        -->
+    <!-- OPPGAVE 7: PLASSHOLDER                     -->
     <!-- ========================================== -->
     <div id="screen-task7" class="screen">
         <h2>Oppgave 7</h2>
-        <p>Velkommen til neste rom!</p>
+        <p>Gratulerer, du kom deg helt hit!</p>
     </div>
 
-        
-        function startTask3() {
-        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission()
-                    .then(permissionState => {
-                        if (permissionState === 'granted') {
-                            initHourglass();
-                        } else {
-                            alert("Vi trenger tilgang til bevegelsessensoren for å løse gåten!");
-                        }
-                    })
-                    .catch(console.error);
-            } else {
-                // Enheter som ikke krever tillatelse
-                initHourglass();
-            }
-        }
-
-        function initHourglass() {
-            // Skjul introtekst og vis selve timeglasset
-            document.getElementById('task3-intro').style.display = 'none';
-            document.getElementById('task3-content').style.display = 'block';
-
-            // Lytt etter endringer i telefonens rotasjon
-            window.addEventListener('deviceorientation', (event) => {
-                // Hvis beta er under -45 grader, regnes telefonen som opp ned
-                if (event.beta < -45) {
-                    isUpsideDown = true;
-                    document.getElementById('hourglass-icon').style.transform = "rotate(180deg)"; // Visuell rotasjon
-                } else {
-                    isUpsideDown = false;
-                    document.getElementById('hourglass-icon').style.transform = "rotate(0deg)";
-                }
-            });
-
-            // Start en "game loop" som kjører hver 1000. millisekund (hvert sekund)
-            timerInterval = setInterval(() => {
-                // Logikken for timeglasset
-                if (isUpsideDown) {
-                    timeInSeconds++; // Reverserer tiden
-                } else {
-                    timeInSeconds--; // Tiden renner vanlig ut
-                }
-
-                // Formaterer tiden tilbake til mm:ss
-                let minutes = Math.floor(timeInSeconds / 60);
-                let seconds = timeInSeconds % 60;
-                let timeString = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-                
-                document.getElementById('timer-display').innerText = timeString;
-
-                // Sjekk om målet er nådd
-                if (timeInSeconds >= TARGET_TIME) {
-                    clearInterval(timerInterval); // Stopp klokken
-                    document.getElementById('task3-success').style.display = 'block';
-                } else if (timeInSeconds <= 0) {
-                    // Sørg for at tiden ikke går i minus
-                    timeInSeconds = 0; 
-                }
-            }, 1000); 
-        }
-        function toggleLights() {
-            // Sjekker om boksen er krysset av
-            const isLightOff = document.getElementById('light-switch').checked; 
-            const overlay = document.getElementById('darkness-overlay');
-            const secretInk = document.getElementById('secret-ink');
-
-            if (isLightOff) {
-                // Mørklegger plakaten med en lilla UV-farge ved hjelp av multiply-effekten
-                overlay.style.backgroundColor = '#1a0033';
-                
-                // Endrer fargen på den hvite teksten slik at den "gløder" i mørket
-                secretInk.style.color = '#00ffcc';
-                secretInk.style.textShadow = '0 0 15px #00ffcc';
-            } else {
-                // Skrur på lyset igjen ved å gjøre filteret gjennomsiktig
-                overlay.style.backgroundColor = 'transparent';
-                
-                // Gjør teksten usynlig igjen (hvit på hvit)
-                secretInk.style.color = '#ffffff';
-                secretInk.style.textShadow = 'none';
-            }
-        }
-
-        // SHA-256 hashen for løsningskoden "8421"
-        const HASH_TASK4 = 'fcd4e25bb2a919b986574a4432b396deccf6f119f1919efb4ce6e86e1227e9ac';
-
-        async function validateTask4() {
-            const inputEl = document.getElementById('task4-input');
-            const errorEl = document.getElementById('task4-error');
-            
-            const answer = inputEl.value.trim();
-            const hashedAnswer = await sha256(answer);
-            
-            if (hashedAnswer === HASH_TASK4) {
-                errorEl.style.display = 'none';
-                // Hvis koden er riktig, sendes de til den nye sluttskjermen!
-                goToScreen('screen-task3'); 
-            } else {
-                errorEl.style.display = 'block';
-            }
-        }
-    </script>
+    <!-- ========================================== -->
+    <!-- KOBLING TIL JAVASCRIPT-FILEN               -->
+    <!-- ========================================== -->
+    <script src="script.js"></script>
 </body>
 </html>

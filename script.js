@@ -27,18 +27,25 @@ const gameFlow = {
     'screen-start': 'screen-task1',
 
     // VEIDELET FRA OPPGAVE 1:
-    'path-solo': 'screen-task2a',
-    'path-oslo': 'screen-task2b',
+    'path-oslo': 'screen-task2a', // OSLO sender til Spor A
+    'path-solo': 'screen-task2b', // SOLO sender til Spor B
 
-    // SPOR A (Hvis de svarer SOLO)
+    // SPOR A (for de som svarte OSLO)
     'screen-task2a': 'screen-task3a',
     'screen-task3a': 'screen-task4a',
-    'screen-task4a': 'screen-task5', 
+    'screen-task4a': 'screen-task5',  // Samles ved oppgave 5!
 
-    // SPOR B (Hvis de svarer OSLO)
+    // SPOR B (for de som svarte SOLO)
     'screen-task2b': 'screen-task3b',
     'screen-task3b': 'screen-task4b',
-    'screen-task4b': 'screen-task5'  
+    'screen-task4b': 'screen-task5',  // Samles ved oppgave 5!
+
+    // FELLES LØP VIDERE FRA OPPGAVE 5
+    'screen-task5': 'screen-task6'
+    'screen-task6': 'screen-task7'
+    'screen-task7': 'screen-task8'
+    'screen-task8': 'screen-task9'
+    'screen-task9': 'screen-task10'
 };
 
 function advanceFrom(currentScreenId) {

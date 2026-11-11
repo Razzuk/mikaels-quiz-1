@@ -334,7 +334,7 @@ function flappyGameLoop() {
             p.passed = true;
             flappyScore++;
 
-            if (flappyScore >= 30) {
+            if (flappyScore >= 20) {
                 winFlappyGame();
                 return;
             }

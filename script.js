@@ -86,8 +86,9 @@ async function validateTask1() {
     }
 }
 
+
 // ==========================================
-//  (TIMEGLASS)
+//  (5TIMEGLASS)
 // ==========================================
 let timeInSeconds = 60;
         const TARGET_TIME = 80;
@@ -154,3 +155,172 @@ let timeInSeconds = 60;
                 }
             }, 1000); 
         }
+// ==========================================
+// OPPGAVE 6: FLAPPY SANTA SPILL-LOGIKK
+// ==========================================
+let canvas, ctx;
+let santaY, santaVelocity, santaGravity, santaJump;
+let pipes = [];
+let flappyScore = 0;
+let isFlappyRunning = false;
+let flappyAnimationId;
+let pipeTimer = 0;
+
+function initFlappyCanvas() {
+    canvas = document.getElementById('flappy-canvas');
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
+
+    // Lytt etter trykk/klikk for å flakse
+    canvas.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        flapSanta();
+    });
+
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && isFlappyRunning) {
+            e.preventDefault();
+            flapSanta();
+        }
+    });
+}
+
+function flapSanta() {
+    if (isFlappyRunning) {
+        santaVelocity = santaJump;
+    }
+}
+
+function startFlappyGame() {
+    if (!canvas) initFlappyCanvas();
+
+    document.getElementById('flappy-overlay').style.display = 'none';
+    document.getElementById('task6-success').style.display = 'none';
+
+    // Tilbakestill verdier
+    santaY = 180;
+    santaVelocity = 0;
+    santaGravity = 0.28;
+    santaJump = -5.5;
+    pipes = [];
+    flappyScore = 0;
+    pipeTimer = 0;
+    isFlappyRunning = true;
+
+    cancelAnimationFrame(flappyAnimationId);
+    flappyGameLoop();
+}
+
+function flappyGameLoop() {
+    if (!isFlappyRunning) return;
+
+    // 1. Fysikk for nissen
+    santaVelocity += santaGravity;
+    santaY += santaVelocity;
+
+    // 2. Generer hindringer (piper)
+    pipeTimer++;
+    if (pipeTimer % 95 === 0) {
+        const gap = 115; // Åpningen nissen skal fly gjennom
+        const minHeight = 40;
+        const topHeight = Math.floor(Math.random() * (canvas.height - gap - minHeight * 2)) + minHeight;
+        pipes.push({
+            x: canvas.width,
+            top: topHeight,
+            bottom: topHeight + gap,
+            passed: false
+        });
+    }
+
+    // 3. Flytt piper og sjekk kollisjoner
+    for (let i = 0; i < pipes.length; i++) {
+        let p = pipes[i];
+        p.x -= 1.8; // Fart mot venstre
+
+        // Poengtelling når nissen passerer
+        if (!p.passed && p.x + 35 < 50) {
+            p.passed = true;
+            flappyScore++;
+
+            // Sjekk om målet på 30 poeng er nådd!
+            if (flappyScore >= 30) {
+                winFlappyGame();
+                return;
+            }
+        }
+
+        // Kollisjonssjekk (nisse-størrelse ca. 24x24 px ved x = 50)
+        const santaX = 50;
+        const santaRadius = 12;
+
+        if (santaX + santaRadius > p.x && santaX - santaRadius < p.x + 40) {
+            if (santaY - santaRadius < p.top || santaY + santaRadius > p.bottom) {
+                gameOverFlappy();
+                return;
+            }
+        }
+    }
+
+    // Fjern rør som har sklidd ut av skjermen
+    pipes = pipes.filter(p => p.x > -50);
+
+    // Kollisjon med tak eller gulv
+    if (santaY > canvas.height - 15 || santaY < 10) {
+        gameOverFlappy();
+        return;
+    }
+
+    // 4. Tegn alt på lerretet
+    drawFlappyScene();
+
+    flappyAnimationId = requestAnimationFrame(flappyGameLoop);
+}
+
+function drawFlappyScene() {
+    // Bakgrunn (nattehimmel)
+    ctx.fillStyle = '#071326';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Tegn piper (julerøde piper med snø på toppen)
+    for (let p of pipes) {
+        // Øvre pipe
+        ctx.fillStyle = '#8b1e2a';
+        ctx.fillRect(p.x, 0, 40, p.top);
+        ctx.fillStyle = '#ffffff'; // Snøkant
+        ctx.fillRect(p.x - 2, p.top - 6, 44, 6);
+
+        // Nedre pipe
+        ctx.fillStyle = '#8b1e2a';
+        ctx.fillRect(p.x, p.bottom, 40, canvas.height - p.bottom);
+        ctx.fillStyle = '#ffffff'; // Snøkant
+        ctx.fillRect(p.x - 2, p.bottom, 44, 6);
+    }
+
+    // Tegn Nissen (emoji)
+    ctx.font = '28px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎅', 50, santaY);
+
+    // Tegn poengoversikt øverst
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Poeng: ${flappyScore} / 30`, 15, 28);
+}
+
+function gameOverFlappy() {
+    isFlappyRunning = false;
+    document.getElementById('flappy-msg').innerHTML = `Du krasjet på ${flappyScore} poeng!<br>Prøv igjen!`;
+    document.getElementById('flappy-overlay').style.display = 'flex';
+}
+
+function winFlappyGame() {
+    isFlappyRunning = false;
+    // Tegn siste bilde med 30 poeng
+    drawFlappyScene();
+    document.getElementById('task6-success').style.display = 'block';
+}
+
+// Klargjør lyttere når siden lastes
+window.addEventListener('DOMContentLoaded', initFlappyCanvas);

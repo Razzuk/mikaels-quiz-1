@@ -60,38 +60,28 @@ function advanceFrom(currentScreenId) {
 // ==========================================
 // OPPGAVE 1
 // ==========================================
-const HASH_SOLO = '5364f2f2fc4f54e9d47ad29cfb08ef430c8153394bf2a0dff5cbe77a0ffef861';
+// Forhåndsberegnede SHA-256 hashes
 const HASH_OSLO = '8e016391c88c77d6773deab343b91f53bb64bfbc9ca18101844cb84c3d01e561';
+const HASH_SOLO = '5364f2f2fc4f54e9d47ad29cfb08ef430c8153394bf2a0dff5cbe77a0ffef861';
 
 async function validateTask1() {
     const inputEl = document.getElementById('task1-input');
     const errorEl = document.getElementById('task1-error');
     
-    // Saniterer teksten for unødvendige mellomrom og store bokstaver
     const answer = inputEl.value.trim().toLowerCase();
-
-    // Venter på at hashen skal beregnes
     const hashedAnswer = await sha256(answer);
 
-    // Sammenligner brukerens hash med fasit-hashen
-    if (hashedAnswer === HASH_SOLO) {
-        // De svarte SOLO! Skjul feilmelding og send til Spor A
+    if (hashedAnswer === HASH_OSLO) {
         errorEl.style.display = 'none';
+        // Slår opp i kartet og sender til screen-task2a:
+        goToScreen(gameFlow['path-oslo']);
         
-        // Slå opp i kartet hvor "path-solo" leder:
-        const nextScreen = gameFlow['path-solo'];
-        goToScreen(nextScreen);
-        
-    } else if (hashedAnswer === HASH_OSLO) {
-        // De svarte OSLO! Skjul feilmelding og send til Spor B
+    } else if (hashedAnswer === HASH_SOLO) {
         errorEl.style.display = 'none';
-        
-        // Slå opp i kartet hvor "path-oslo" leder:
-        const nextScreen = gameFlow['path-oslo'];
-        goToScreen(nextScreen);
+        // Slår opp i kartet og sender til screen-task2b:
+        goToScreen(gameFlow['path-solo']);
         
     } else {
-        // Feil svar
         errorEl.style.display = 'block';
     }
 }

@@ -25,10 +25,70 @@
         <!-- Feilmelding som er skjult som standard -->
         <p id="task1-error" style="color:red; display:none;">Feil kode, prøv igjen!</p>
     </div>
+<!-- ========================================== -->
+    <!-- SPOR A (OSLO-VEIEN)                        -->
+    <!-- ========================================== -->
 
+    <!-- OPPGAVE 2A -->
+    <div id="screen-task2a" class="screen">
+        <h2>Oppgave 2A (Spor A - Oslo)</h2>
+        <p>Testoppgave: Skriv inn testkoden <strong>a2</strong> for å gå videre.</p>
+        <input type="text" id="task2a-input" placeholder="Skriv a2">
+        <button onclick="validateTask2a()">Sjekk svar</button>
+        <p id="task2a-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "a2".</p>
+    </div>
 
-    <div id="screen-task3" class="screen">
-        <h2>Oppgave 3: Timeglasset</h2>
+    <!-- OPPGAVE 3A -->
+    <div id="screen-task3a" class="screen">
+        <h2>Oppgave 3A (Spor A - Oslo)</h2>
+        <p>Testoppgave: Skriv inn testkoden <strong>a3</strong> for å gå videre.</p>
+        <input type="text" id="task3a-input" placeholder="Skriv a3">
+        <button onclick="validateTask3a()">Sjekk svar</button>
+        <p id="task3a-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "a3".</p>
+    </div>
+
+    <!-- OPPGAVE 4A -->
+    <div id="screen-task4a" class="screen">
+        <h2>Oppgave 4A (Spor A - Oslo)</h2>
+        <p>Testoppgave: Skriv inn testkoden <strong>a4</strong> for å gå til oppgave 5.</p>
+        <input type="text" id="task4a-input" placeholder="Skriv a4">
+        <button onclick="validateTask4a()">Sjekk svar</button>
+        <p id="task4a-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "a4".</p>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SPOR B (SOLO-VEIEN)                        -->
+    <!-- ========================================== -->
+
+    <!-- OPPGAVE 2B -->
+    <div id="screen-task2b" class="screen">
+        <h2>Oppgave 2B (Spor B - Solo)</h2>
+        <p>Testoppgave: Skriv inn testkoden <strong>b2</strong> for å gå videre.</p>
+        <input type="text" id="task2b-input" placeholder="Skriv b2">
+        <button onclick="validateTask2b()">Sjekk svar</button>
+        <p id="task2b-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "b2".</p>
+    </div>
+
+    <!-- OPPGAVE 3B -->
+    <div id="screen-task3b" class="screen">
+        <h2>Oppgave 3B (Spor B - Solo)</h2>
+        <p>Testoppgave: Skriv inn testkoden <strong>b3</strong> for å gå videre.</p>
+        <input type="text" id="task3b-input" placeholder="Skriv b3">
+        <button onclick="validateTask3b()">Sjekk svar</button>
+        <p id="task3b-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "b3".</p>
+    </div>
+
+    <!-- OPPGAVE 4B -->
+    <div id="screen-task4b" class="screen">
+        <h2>Oppgave 4B (Spor B - Solo)</h2>
+        <p>Testoppgave: Skriv inn testkoden <strong>b4</strong> for å gå til oppgave 5.</p>
+        <input type="text" id="task4b-input" placeholder="Skriv b4">
+        <button onclick="validateTask4b()">Sjekk svar</button>
+        <p id="task4b-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "b4".</p>
+    </div>
+
+    <div id="screen-task5" class="screen">
+        <h2>Oppgave 5: Timeglasset</h2>
         
         <div id="task3-intro">
             <p>Tiden renner ut! Utforsk enhetens tyngdekraft for å reversere prosessen.</p>
@@ -46,38 +106,7 @@
             </div>
         </div>
     </div>
-    <div id="screen-task4" class="screen">
-        <h2>Oppgave 4: Usynlig blekk</h2>
-        <p>Dere finner en innrammet plakat på veggen, men den virker helt blank. Kanskje dere bør skru av lyset?</p>
-
-        <!-- Boksen som representerer plakaten -->
-        <div style="position: relative; width: 100%; max-width: 400px; height: 250px; background-color: #ffffff; margin: 20px auto; border: 3px solid #444; border-radius: 8px; overflow: hidden;">
-
-            <!-- Den hemmelige koden (hvit på hvit bakgrunn) -->
-            <div id="secret-ink" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 45px; font-weight: bold; color: #ffffff; transition: color 0.3s, text-shadow 0.3s; z-index: 2;">
-                8421
-            </div>
-
-            <!-- Overlegget som mørklegger rommet via 'multiply' -->
-            <div id="darkness-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: transparent; mix-blend-mode: multiply; pointer-events: none; transition: background-color 0.3s; z-index: 3;"></div>
-        </div>
-
-        <!-- Avkrysningsboks som fungerer som lysbryter -->
-        <label style="cursor: pointer; font-size: 18px; display: inline-block; margin-bottom: 20px;">
-            <input type="checkbox" id="light-switch" onchange="toggleLights()"> 🔌 Skru av hovedlyset
-        </label>
-
-        <br>
-        <input type="text" id="task4-input" placeholder="Skriv inn tallkoden">
-        <button onclick="validateTask4()">Lås opp døren</button>
-        <p id="task4-error" style="color:red; display:none;">Feil kode, prøv igjen!</p>
-    </div>
-
-    <div id="screen-task5" class="screen">
-        <h2>Gratulerer! 🎉</h2>
-        <p>Dere låste opp den siste døren og kom dere ut av escape rommet!</p>
-    </div>
-
+   
 
     <script>
         // JAVASCRIPT: SPA Navigasjon (Uendret)
@@ -102,27 +131,7 @@
         }
     
         
-        const HASH_TASK1 = '8e016391c88c77d6773deab343b91f53bb64bfbc9ca18101844cb84c3d01e561';
-    
-        // JAVASCRIPT: Validere oppgave 1 (Nå som asynkron funksjon)
-        async function validateTask1() {
-            const inputEl = document.getElementById('task1-input');
-            const errorEl = document.getElementById('task1-error');
-            
-            // Saniterer teksten for unødvendige mellomrom og store bokstaver
-            const answer = inputEl.value.trim().toLowerCase();
-    
-            // Venter på at hashen skal beregnes
-            const hashedAnswer = await sha256(answer);
-    
-            // Sammenligner brukerens hash med fasit-hashen
-            if (hashedAnswer === HASH_TASK1) {
-                errorEl.style.display = 'none';
-                goToScreen('screen-task3');
-            } else {
-                errorEl.style.display = 'block';
-            }
-        }
+      
         let timeInSeconds = 60;
         const TARGET_TIME = 80;
         let isUpsideDown = false;

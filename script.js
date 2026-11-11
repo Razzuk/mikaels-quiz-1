@@ -163,12 +163,14 @@ async function validateTask4b() {
 // ==========================================
 // OPPGAVE 5: TIMEGLASS (BEVEGELSESSENSOR)
 // ==========================================
-let timeInSeconds = 60;
-const TARGET_TIME = 80;
+let timeInSeconds = 30;         // Starter på 30 sekunder
+const TARGET_TIME = 60;         // Målet er 1 minutt (60 sekunder)
 let isUpsideDown = false;
-let timerInterval;
+let timerInterval = null;
+let orientationListenerActive = false;
 
 function startTask5() {
+    // Ber om tillatelse på iOS 13+
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
             .then(permissionState => {
@@ -184,40 +186,73 @@ function startTask5() {
     }
 }
 
+function handleOrientation(event) {
+    // Når telefonen snus opp ned (beta under -45 grader)
+    if (event.beta < -45) {
+        isUpsideDown = true;
+        document.getElementById('hourglass-icon').style.transform = "rotate(180deg)";
+    } else {
+        isUpsideDown = false;
+        document.getElementById('hourglass-icon').style.transform = "rotate(0deg)";
+    }
+}
+
 function initHourglass() {
     document.getElementById('task5-intro').style.display = 'none';
     document.getElementById('task5-content').style.display = 'block';
+    document.getElementById('task5-gameover').style.display = 'none';
+    document.getElementById('task5-success').style.display = 'none';
 
-    window.addEventListener('deviceorientation', (event) => {
-        if (event.beta < -45) {
-            isUpsideDown = true;
-            document.getElementById('hourglass-icon').style.transform = "rotate(180deg)";
-        } else {
-            isUpsideDown = false;
-            document.getElementById('hourglass-icon').style.transform = "rotate(0deg)";
-        }
-    });
+    // Start lytter kun én gang
+    if (!orientationListenerActive) {
+        window.addEventListener('deviceorientation', handleOrientation);
+        orientationListenerActive = true;
+    }
+
+    startTimerLoop();
+}
+
+function updateTimerDisplay() {
+    let minutes = Math.floor(timeInSeconds / 60);
+    let seconds = timeInSeconds % 60;
+    let timeString = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+    document.getElementById('timer-display').innerText = timeString;
+}
+
+function startTimerLoop() {
+    clearInterval(timerInterval);
+    updateTimerDisplay();
 
     timerInterval = setInterval(() => {
         if (isUpsideDown) {
-            timeInSeconds++;
+            timeInSeconds++; // Teller opp når telefonen er snudd opp ned
         } else {
-            timeInSeconds--;
+            timeInSeconds--; // Teller ned i normal posisjon
         }
 
-        let minutes = Math.floor(timeInSeconds / 60);
-        let seconds = timeInSeconds % 60;
-        let timeString = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-        
-        document.getElementById('timer-display').innerText = timeString;
+        updateTimerDisplay();
 
+        // 1. Sjekk om målet på 1 minutt (60 sekunder) er nådd
         if (timeInSeconds >= TARGET_TIME) {
             clearInterval(timerInterval);
             document.getElementById('task5-success').style.display = 'block';
-        } else if (timeInSeconds <= 0) {
+            document.getElementById('task5-hint').style.display = 'none';
+        } 
+        // 2. Sjekk om tiden rant ut (00:00)
+        else if (timeInSeconds <= 0) {
             timeInSeconds = 0;
+            updateTimerDisplay();
+            clearInterval(timerInterval);
+            document.getElementById('task5-gameover').style.display = 'block';
         }
     }, 1000);
+}
+
+// Funksjon for "Prøv på nytt"-knappen
+function resetTask5() {
+    timeInSeconds = 30; // Nullstill tilbake til 30 sekunder
+    document.getElementById('task5-gameover').style.display = 'none';
+    startTimerLoop();
 }
 
 // ==========================================

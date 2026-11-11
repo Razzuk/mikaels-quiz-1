@@ -99,16 +99,24 @@
         
         <div id="task5-intro">
             <p>Tiden renner ut! Utforsk enhetens tyngdekraft for å reversere prosessen.</p>
+            <p><strong>Mål: Reverser timeglasset til 01:00 før tiden renner ut til 00:00!</strong></p>
             <button id="btn-start-task5" onclick="startTask5()">Aktiver timeglass</button>
         </div>
 
         <div id="task5-content" style="display: none;">
-            <div style="font-size: 50px;" id="hourglass-icon">⏳</div>
-            <div style="font-size: 40px; font-weight: bold;" id="timer-display">13:00</div>
-            <p>Måltall: 14:00</p>
+            <div style="font-size: 50px; transition: transform 0.3s;" id="hourglass-icon">⏳</div>
+            <div style="font-size: 40px; font-weight: bold; margin: 15px 0;" id="timer-display">00:30</div>
+            <p id="task5-hint">Hold enheten opp-ned for å snu sanden!</p>
+
+            <!-- Vises hvis tiden renner ut til 00:00 -->
+            <div id="task5-gameover" style="display: none; color: #ff6b6b; margin-top: 20px;">
+                <p style="font-size: 20px; font-weight: bold;">Tiden rant ut! Sanden er tom.</p>
+                <button onclick="resetTask5()">Prøv på nytt</button>
+            </div>
             
+            <!-- Vises når de når 01:00 -->
             <div id="task5-success" style="display: none; color: lime; margin-top: 20px;">
-                <p>Du klarte det! Tiden ble reversert.</p>
+                <p style="font-size: 20px; font-weight: bold;">🎉 Gratulerer! Du reverserte tiden og samlet 1 minutt med sand!</p>
                 <button onclick="advanceFrom('screen-task5')">Gå til Oppgave 6</button>
             </div>
         </div>

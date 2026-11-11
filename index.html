@@ -98,15 +98,15 @@
         <h2>Oppgave 5: Timeglasset</h2>
         
         <div id="task5-intro">
-            <p>Tiden renner ut! .</p>
-            <p><strong>Mål: Få timeglasset til å vise 1 minutt!</strong></p>
+            <p>Tiden renner ut! Utforsk enhetens tyngdekraft for å reversere prosessen.</p>
+            <p><strong>Mål: Reverser tiden til 01:00 før timeglasset treffer 00:00!</strong></p>
             <button id="btn-start-task5" onclick="startTask5()">Aktiver timeglass</button>
         </div>
 
         <div id="task5-content" style="display: none;">
             <div style="font-size: 50px; transition: transform 0.3s;" id="hourglass-icon">⏳</div>
-            <div style="font-size: 40px; font-weight: bold; margin: 15px 0;" id="timer-display">00:30</div>
-            
+            <div style="font-size: 40px; font-weight: bold; margin: 15px 0;" id="timer-display">00:45</div>
+            <p id="task5-hint">Hold enheten opp-ned for å snu sanden!</p>
 
             <!-- Vises hvis tiden renner ut til 00:00 -->
             <div id="task5-gameover" style="display: none; color: #ff6b6b; margin-top: 20px;">
@@ -114,9 +114,9 @@
                 <button onclick="resetTask5()">Prøv på nytt</button>
             </div>
             
-            <!-- Vises når de når 01:00 -->
+            <!-- Vises når displayet treffer 01:00 -->
             <div id="task5-success" style="display: none; color: lime; margin-top: 20px;">
-                <p style="font-size: 20px; font-weight: bold;">🎉 Gratulerer! Du reverserte tiden og samlet 1 minutt med sand!</p>
+                <p style="font-size: 20px; font-weight: bold;">🎉 Gratulerer! Du reverserte tiden til 1 minutt!</p>
                 <button onclick="advanceFrom('screen-task5')">Gå til Oppgave 6</button>
             </div>
         </div>
@@ -128,7 +128,7 @@
     <div id="screen-task6" class="screen">
         <h2>Oppgave 6: Nissens flyvetest</h2>
         <p>Hjelp nissen trygt gjennom nattehimmelen. Trykk på skjermen for å flakse!</p>
-        <p><strong>Mål: Få minst 30 poeng for å låse opp neste dør.</strong></p>
+        <p><strong>Mål: Få minst 20 poeng for å låse opp neste dør.</strong></p>
 
         <div style="position: relative; display: inline-block;">
             <canvas id="flappy-canvas" width="320" height="420" style="border: 2px solid #ffd700; border-radius: 8px; background: #071326; display: block; margin: 0 auto;"></canvas>
@@ -140,7 +140,7 @@
         </div>
 
         <div id="task6-success" style="display: none; margin-top: 15px;">
-            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Fantastisk! 30 poeng nådd!</p>
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Fantastisk! 20 poeng nådd!</p>
             <button onclick="advanceFrom('screen-task6')">Gå til Oppgave 7</button>
         </div>
     </div>

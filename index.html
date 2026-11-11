@@ -145,12 +145,17 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- OPPGAVE 7: PLASSHOLDER                     -->
+<!-- ========================================== -->
+    <!-- OPPGAVE 7: DET FYSISKE PUSLESPILLET        -->
     <!-- ========================================== -->
     <div id="screen-task7" class="screen">
-        <h2>Oppgave 7</h2>
-        <p>Gratulerer, du kom deg helt hit!</p>
+        <h2>Oppgave 7: Den hemmelige posen</h2>
+        <p>Gå bort til spillmesteren og be om å få <strong>puslespillposen</strong>.</p>
+        <p>Legg brikkene sammen for å finne koden som er skrevet med tusj!</p>
+        
+        <input type="text" id="task7-input" placeholder="Tast inn koden her" inputmode="numeric">
+        <button onclick="validateTask7()">Lås opp</button>
+        <p id="task7-error" style="color: #ff6b6b; display: none;">Feil kode! Sjekk brikkene nøye.</p>
     </div>
 
     <!-- ========================================== -->

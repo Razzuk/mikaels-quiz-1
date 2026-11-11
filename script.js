@@ -163,7 +163,7 @@ async function validateTask4b() {
 // ==========================================
 // OPPGAVE 5: TIMEGLASS (BEVEGELSESSENSOR)
 // ==========================================
-let timeInSeconds = 30;         // Starter på 30 sekunder
+let timeInSeconds = 59;         // Starter på 59 sekunder
 const TARGET_TIME = 60;         // Målet er 1 minutt (60 sekunder)
 let isUpsideDown = false;
 let timerInterval = null;
@@ -250,7 +250,7 @@ function startTimerLoop() {
 
 // Funksjon for "Prøv på nytt"-knappen
 function resetTask5() {
-    timeInSeconds = 30; // Nullstill tilbake til 30 sekunder
+    timeInSeconds = 59; // Nullstill tilbake til 30 sekunder
     document.getElementById('task5-gameover').style.display = 'none';
     startTimerLoop();
 }

@@ -402,3 +402,24 @@ function winFlappyGame() {
 }
 
 window.addEventListener('DOMContentLoaded', initFlappyCanvas);
+
+// ==========================================
+// OPPGAVE 7: PUSLESPILLET (KODE: 14916)
+// ==========================================
+const HASH_TASK7 = '0cba2fa7ffebce9bb31e312ee655e6c071e3e83dadeca2d5a75a67a0a9aa9421';
+
+async function validateTask7() {
+    const inputEl = document.getElementById('task7-input');
+    const errorEl = document.getElementById('task7-error');
+    
+    // Fjerner eventuelle utilsiktede mellomrom som spilleren taster inn
+    const val = inputEl.value.replace(/\s+/g, '');
+    const hash = await sha256(val);
+
+    if (hash === HASH_TASK7) {
+        errorEl.style.display = 'none';
+        advanceFrom('screen-task7'); // Ruter dem automatisk videre til screen-task8!
+    } else {
+        errorEl.style.display = 'block';
+    }
+}

@@ -86,13 +86,13 @@ async function validateTask1() {
 // ==========================================
 // TESTKODER FOR PLACEHOLDERE (SPOR A & B)
 // ==========================================
-const HASH_A2 = '3c285e6878b40889c4709d290fb444692eb32103328e1d70e4d02f5a898516fb'; // "a2"
-const HASH_A3 = '517a6344d56f4d22abac54b83b3e24564b15093557e0ea0ffc87242d50cc14ca'; // "a3"
-const HASH_A4 = '85e053fa28fbcf34863f684cf0dbe7d5bb25cf8c422896cbab9d2e5352c3c13b'; // "a4"
+const HASH_A2 = '2c3a4249d77070058649dbd822dcaf7957586fce428cfb2ca88b94741eda8b07'; // "a2"
+const HASH_A3 = 'f46dd28a5499d8efef0b8fb8ee1ec1c5a5e407c9381741d576ba8deb4f59ec3f'; // "a3"
+const HASH_A4 = '4539e4b4889079c2a00afeae0bfc1439840ef2379a1fb81c8ba27361ad476d6b'; // "a4"
 
-const HASH_B2 = '87a56193ff7ef2f2ea55c70c0c62d8544d62325bb0f4cb9744cf2f017fa78f5a'; // "b2"
-const HASH_B3 = 'e48a513be8251ad0143cc9487900b731b81d7f6c6f60046b0a8806f35bca04a5'; // "b3"
-const HASH_B4 = 'e8b83ee855cc5d862f1ca0bfe48eb0396dd3ce8f15858cfd795906efd3f848be'; // "b4"
+const HASH_B2 = '4814d92093ac8a0f4a2163ab87dee509ba306a58f5888be0edcb2fcd0712028b'; // "b2"
+const HASH_B3 = '76a8277347f52530e1cf979175a178980b3a180d176165c985d85f7e142f1eed'; // "b3"
+const HASH_B4 = '486bacc5c2d8a71a73d51bf8e522deaa264ec2628dca2955da1e9b8e00f21943'; // "b4"
 
 async function validateTask2a() {
     const val = document.getElementById('task2a-input').value.trim().toLowerCase();

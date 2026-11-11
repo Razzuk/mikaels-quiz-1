@@ -127,7 +127,41 @@
         const TARGET_TIME = 80;
         let isUpsideDown = false;
         let timerInterval;
+<!-- ========================================== -->
+    <!-- OPPGAVE 6: FLAPPY SANTA (30 POENG)         -->
+    <!-- ========================================== -->
+    <div id="screen-task6" class="screen">
+        <h2>Oppgave 6: Nissens flyvetest</h2>
+        <p>Hjelp nissen trygt gjennom nattehimmelen. Trykk på skjermen for å flakse!</p>
+        <p><strong>Mål: Få minst 30 poeng for å låse opp neste dør.</strong></p>
 
+        <!-- Selve spillområdet -->
+        <div style="position: relative; display: inline-block;">
+            <canvas id="flappy-canvas" width="320" height="420" style="border: 2px solid #ffd700; border-radius: 8px; background: #071326; display: block; margin: 0 auto;"></canvas>
+            
+            <!-- Spillmeny ved start og tap -->
+            <div id="flappy-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 8px;">
+                <p id="flappy-msg" style="font-size: 20px; font-weight: bold; color: #ffd700; margin-bottom: 10px;">Klar til avgang?</p>
+                <button onclick="startFlappyGame()">Start flyvningen</button>
+            </div>
+        </div>
+
+        <!-- Vises automatisk når 30 poeng er nådd -->
+        <div id="task6-success" style="display: none; margin-top: 15px;">
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Fantastisk! 30 poeng nådd!</p>
+            <button onclick="advanceFrom('screen-task6')">Gå til Oppgave 7</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- OPPGAVE 7 (Midlertidig plassholder)        -->
+    <!-- ========================================== -->
+    <div id="screen-task7" class="screen">
+        <h2>Oppgave 7</h2>
+        <p>Velkommen til neste rom!</p>
+    </div>
+
+        
         function startTask3() {
         if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission()

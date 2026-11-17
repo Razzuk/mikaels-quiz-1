@@ -680,6 +680,34 @@ function markTargetFound(target, index, wrapper) {
 }
 
 // ==========================================
+// OPPGAVE 9: JULEMARKEDET (FASIT: -3.5)
+// ==========================================
+// SHA-256 for "-3.5" (3 + 4.5 - 11)
+const HASH_TASK9 = '3eb155cf9da37ed018b55502844dcf8d285189ca01f0af27fea31df46d388760';
+
+async function validateTask9() {
+    const inputEl = document.getElementById('task9-input');
+    const errorEl = document.getElementById('task9-error');
+    if (!inputEl) return;
+
+    // Fjerner mellomrom og gjør komma om til punktum (støtter både -3,5 og -3.5)
+    let val = inputEl.value.trim().replace(/\s+/g, '').replace(',', '.');
+    const hash = await sha256(val);
+
+    if (hash === HASH_TASK9) {
+        if (errorEl) errorEl.style.display = 'none';
+        const successEl = document.getElementById('task9-success');
+        if (successEl) {
+            successEl.style.display = 'block';
+        } else {
+            advanceFrom('screen-task9');
+        }
+    } else {
+        if (errorEl) errorEl.style.display = 'block';
+    }
+}
+
+// ==========================================
 // OPPSTART VED SIDELASTING
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {

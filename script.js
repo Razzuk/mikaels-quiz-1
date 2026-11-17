@@ -1,11 +1,7 @@
 // ==========================================
 // GLOBALE FUNKSJONER (Navigasjon og hashing)
 // ==========================================
-if (screenId === 'screen-task4a') {
-    initFlagTaskA();
-} else if (screenId === 'screen-task4b') {
-    initFlagTaskB();
-}
+
 
 function goToScreen(screenId) {
     const screens = document.querySelectorAll('.screen');
@@ -15,10 +11,15 @@ function goToScreen(screenId) {
     const target = document.getElementById(screenId);
     if (target) {
         target.classList.add('active');
+        if (screenId === 'screen-task4a') {
+            initFlagTaskA();
+        } else if (screenId === 'screen-task4b') {
+            initFlagTaskB();
+        }
     } else {
         console.error("Fant ikke skjerm med ID:", screenId);
+        }
     }
-}
 
 async function sha256(message) {
     const msgUint8 = new TextEncoder().encode(message);

@@ -51,13 +51,25 @@
         <p id="task3a-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "a3".</p>
     </div>
 
-    <!-- OPPGAVE 4A -->
+    <!-- ========================================== -->
+    <!-- OPPGAVE 4A: FLAGG-SORTERING (SPOR A - OSLO)-->
+    <!-- ========================================== -->
     <div id="screen-task4a" class="screen">
-        <h2>Oppgave 4A (Spor A - Oslo)</h2>
-        <p>Testoppgave: Skriv inn testkoden <strong>a4</strong> for å gå til oppgave 5.</p>
-        <input type="text" id="task4a-input" placeholder="Skriv a4">
-        <button onclick="validateTask4a()">Sjekk svar</button>
-        <p id="task4a-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "a4".</p>
+        <h2>Oppgave 4A: Flagg-kaos</h2>
+        <p>Sorter de 8 flaggene i <strong>alfabetisk rekkefølge</strong> etter landets navn på norsk (A–Å).</p>
+        <p style="font-size: 14px; color: #ffd700;">Bruk ⬆️ og ⬇️ knappene for å flytte flaggene.</p>
+
+        <div id="flag-list-4a" style="max-width: 320px; margin: 0 auto 15px auto; display: flex; flex-direction: column; gap: 8px;">
+            <!-- Genereres automatisk av JavaScript -->
+        </div>
+
+        <button onclick="validateTask4a()">Sjekk rekkefølge</button>
+        <p id="task4a-error" style="color: #ff6b6b; display: none; margin-top: 10px;">Ikke helt riktig rekkefølge enda! Prøv igjen.</p>
+        
+        <div id="task4a-success" style="display: none; margin-top: 15px;">
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Helt perfekt sortert!</p>
+            <button onclick="advanceFrom('screen-task4a')">Gå til Oppgave 5</button>
+        </div>
     </div>
 
     <!-- ========================================== -->
@@ -82,15 +94,26 @@
         <p id="task3b-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "b3".</p>
     </div>
 
-    <!-- OPPGAVE 4B -->
+    <!-- ========================================== -->
+    <!-- OPPGAVE 4B: FLAGG-SORTERING (SPOR B - SOLO)-->
+    <!-- ========================================== -->
     <div id="screen-task4b" class="screen">
-        <h2>Oppgave 4B (Spor B - Solo)</h2>
-        <p>Testoppgave: Skriv inn testkoden <strong>b4</strong> for å gå til oppgave 5.</p>
-        <input type="text" id="task4b-input" placeholder="Skriv b4">
-        <button onclick="validateTask4b()">Sjekk svar</button>
-        <p id="task4b-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "b4".</p>
-    </div>
+        <h2>Oppgave 4B: Flagg-kaos</h2>
+        <p>Sorter de 8 flaggene i <strong>alfabetisk rekkefølge</strong> etter landets navn på norsk (A–Å).</p>
+        <p style="font-size: 14px; color: #ffd700;">Bruk ⬆️ og ⬇️ knappene for å flytte flaggene.</p>
 
+        <div id="flag-list-4b" style="max-width: 320px; margin: 0 auto 15px auto; display: flex; flex-direction: column; gap: 8px;">
+            <!-- Genereres automatisk av JavaScript -->
+        </div>
+
+        <button onclick="validateTask4b()">Sjekk rekkefølge</button>
+        <p id="task4b-error" style="color: #ff6b6b; display: none; margin-top: 10px;">Ikke helt riktig rekkefølge enda! Prøv igjen.</p>
+        
+        <div id="task4b-success" style="display: none; margin-top: 15px;">
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Helt perfekt sortert!</p>
+            <button onclick="advanceFrom('screen-task4b')">Gå til Oppgave 5</button>
+        </div>
+    </div>
     <!-- ========================================== -->
     <!-- OPPGAVE 5: TIMEGLASSET (FELLES MØTEPUNKT)  -->
     <!-- ========================================== -->

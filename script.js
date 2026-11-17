@@ -1,6 +1,12 @@
 // ==========================================
 // GLOBALE FUNKSJONER (Navigasjon og hashing)
 // ==========================================
+if (screenId === 'screen-task4a') {
+    initFlagTaskA();
+} else if (screenId === 'screen-task4b') {
+    initFlagTaskB();
+}
+
 function goToScreen(screenId) {
     const screens = document.querySelectorAll('.screen');
     screens.forEach(screen => {

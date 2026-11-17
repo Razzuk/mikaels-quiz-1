@@ -23,7 +23,7 @@ function goToScreen(screenId) {
     }
 }
 
-// Både startGame() og advanceFrom('screen-start') støttes
+// Koblet direkte til "Start spillet"-knappen
 function startGame() {
     goToScreen('screen-task1');
 }
@@ -325,10 +325,12 @@ function startTask5() {
 function handleOrientation(event) {
     if (event.beta < -45) {
         isUpsideDown = true;
-        document.getElementById('hourglass-icon').style.transform = "rotate(180deg)";
+        const icon = document.getElementById('hourglass-icon');
+        if (icon) icon.style.transform = "rotate(180deg)";
     } else {
         isUpsideDown = false;
-        document.getElementById('hourglass-icon').style.transform = "rotate(0deg)";
+        const icon = document.getElementById('hourglass-icon');
+        if (icon) icon.style.transform = "rotate(0deg)";
     }
 }
 
@@ -350,7 +352,8 @@ function updateTimerDisplay() {
     let minutes = Math.floor(timeInSeconds / 60);
     let seconds = timeInSeconds % 60;
     let timeString = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-    document.getElementById('timer-display').innerText = timeString;
+    const disp = document.getElementById('timer-display');
+    if (disp) disp.innerText = timeString;
 }
 
 function startTimerLoop() {

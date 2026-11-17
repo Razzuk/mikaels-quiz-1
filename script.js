@@ -593,11 +593,11 @@ async function validateTask7() {
 
 // Sett inn dine 5 objekter her. Foreløpige test-koordinater:
 const waldoTargets = [
-    { name: "Nisselue",   x: 25.0, y: 30.0, radius: 4.0, found: false },
-    { name: "Pepperkake", x: 60.0, y: 20.0, radius: 4.0, found: false },
-    { name: "Pakke",      x: 80.0, y: 75.0, radius: 4.0, found: false },
-    { name: "Bjelle",     x: 15.0, y: 80.0, radius: 4.0, found: false },
-    { name: "Candy cane", x: 45.0, y: 55.0, radius: 4.0, found: false }
+    { name: "Willy",                x: 85.4, y: 73.9, radius: 3.5, found: false },
+    { name: "Trollmann Hvitskjegg", x: 6.8,  y: 75.8, radius: 3.5, found: false },
+    { name: "Et par vannski",        x: 83.6, y: 40.4, radius: 3.5, found: false },
+    { name: "Et anker",             x: 96.2, y: 66.5, radius: 3.5, found: false },
+    { name: "Et monster",           x: 93.2, y: 11.7, radius: 3.5, found: false }
 ];
 
 let waldoFoundCount = 0;

@@ -122,14 +122,14 @@ async function validateTask3a() {
 
 // SPOR A: Flaggdata og fasit (Argentina -> Hellas)
 const flagsDataA = [
-    { id: 'AR', name: 'Argentina', flag: '🇦🇷' },
-    { id: 'BE', name: 'Belgia',    flag: '🇧🇪' },
-    { id: 'CL', name: 'Chile',     flag: '🇨🇱' },
-    { id: 'DK', name: 'Danmark',   flag: '🇩🇰' },
-    { id: 'EG', name: 'Egypt',     flag: '🇪🇬' },
-    { id: 'FI', name: 'Finland',   flag: '🇫🇮' },
-    { id: 'GH', name: 'Ghana',     flag: '🇬🇭' },
-    { id: 'GR', name: 'Hellas',    flag: '🇬🇷' }
+    { id: 'AR', name: 'Argentina', code: 'ar' },
+    { id: 'BE', name: 'Belgia',    code: 'be' },
+    { id: 'CL', name: 'Chile',     code: 'cl' },
+    { id: 'DK', name: 'Danmark',   code: 'dk' },
+    { id: 'EG', name: 'Egypt',     code: 'eg' },
+    { id: 'FI', name: 'Finland',   code: 'fi' },
+    { id: 'GH', name: 'Ghana',     code: 'gh' },
+    { id: 'GR', name: 'Hellas',    code: 'gr' }
 ];
 const CORRECT_ORDER_4A = ['AR', 'BE', 'CL', 'DK', 'EG', 'FI', 'GH', 'GR'];
 let currentFlagsA = [];
@@ -158,19 +158,19 @@ async function validateTask3b() {
 
 // SPOR B: Flaggdata og fasit (Island -> Spania)
 const flagsDataB = [
-    { id: 'IS', name: 'Island',  flag: '🇮🇸' },
-    { id: 'JP', name: 'Japan',   flag: '🇯🇵' },
-    { id: 'KE', name: 'Kenya',   flag: '🇰🇪' },
-    { id: 'LB', name: 'Libanon', flag: '🇱🇧' },
-    { id: 'MX', name: 'Mexico',  flag: '🇲🇽' },
-    { id: 'NO', name: 'Norge',   flag: '🇳🇴' },
-    { id: 'PL', name: 'Polen',   flag: '🇵🇱' },
-    { id: 'ES', name: 'Spania',  flag: '🇪🇸' }
+    { id: 'IS', name: 'Island',  code: 'is' },
+    { id: 'JP', name: 'Japan',   code: 'jp' },
+    { id: 'KE', name: 'Kenya',   code: 'ke' },
+    { id: 'LB', name: 'Libanon', code: 'lb' },
+    { id: 'MX', name: 'Mexico',  code: 'mx' },
+    { id: 'NO', name: 'Norge',   code: 'no' },
+    { id: 'PL', name: 'Polen',   code: 'pl' },
+    { id: 'ES', name: 'Spania',  code: 'es' }
 ];
 const CORRECT_ORDER_4B = ['IS', 'JP', 'KE', 'LB', 'MX', 'NO', 'PL', 'ES'];
 let currentFlagsB = [];
 
-// Felles funksjon for å tegne en flaggliste
+// Funksjon som tegner flagglisten med ekte bilder
 function renderFlagListUI(containerId, flagList, track) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -185,29 +185,37 @@ function renderFlagListUI(containerId, flagList, track) {
         row.style.background = 'rgba(255, 255, 255, 0.1)';
         row.style.border = '1px solid #ffd700';
         row.style.borderRadius = '6px';
-        row.style.padding = '6px 12px';
+        row.style.padding = '8px 12px';
 
+        // Venstre side: Nummerering og selve flaggbildet
         const label = document.createElement('div');
-        label.style.fontSize = '24px';
         label.style.display = 'flex';
         label.style.alignItems = 'center';
-        label.style.gap = '10px';
-        label.innerHTML = `<span style="font-size: 16px; color: #ffd700; width: 20px;">${index + 1}.</span> <span>${item.flag}</span>`;
+        label.style.gap = '12px';
 
+        // Bruker FlagCDN for å hente flaggene i fast størrelse
+        label.innerHTML = `
+            <span style="font-size: 16px; font-weight: bold; color: #ffd700; width: 22px;">${index + 1}.</span> 
+            <img src="[suspicious link removed]{item.code}.png" 
+                 alt="Flagg" 
+                 style="width: 48px; height: 32px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); display: block;">
+        `;
+
+        // Høyre side: Opp- og ned-knapper
         const btnGroup = document.createElement('div');
         btnGroup.style.display = 'flex';
-        btnGroup.style.gap = '5px';
+        btnGroup.style.gap = '6px';
 
         const upBtn = document.createElement('button');
         upBtn.innerText = '⬆️';
-        upBtn.style.padding = '4px 8px';
+        upBtn.style.padding = '6px 10px';
         upBtn.style.fontSize = '14px';
         upBtn.disabled = (index === 0);
         upBtn.onclick = () => moveFlagItem(track, index, -1);
 
         const downBtn = document.createElement('button');
         downBtn.innerText = '⬇️';
-        downBtn.style.padding = '4px 8px';
+        downBtn.style.padding = '6px 10px';
         downBtn.style.fontSize = '14px';
         downBtn.disabled = (index === flagList.length - 1);
         downBtn.onclick = () => moveFlagItem(track, index, 1);
@@ -221,12 +229,13 @@ function renderFlagListUI(containerId, flagList, track) {
     });
 }
 
-// Flytte et flagg opp eller ned
+// Flytt flagg opp eller ned i listen
 function moveFlagItem(track, index, direction) {
     const list = (track === '4a') ? currentFlagsA : currentFlagsB;
     const targetIndex = index + direction;
     if (targetIndex < 0 || targetIndex >= list.length) return;
 
+    // Bytt plass
     const temp = list[index];
     list[index] = list[targetIndex];
     list[targetIndex] = temp;
@@ -238,7 +247,7 @@ function moveFlagItem(track, index, direction) {
     }
 }
 
-// Validering for Oppgave 4A
+// Validering for Oppgave 4A (Oslo)
 function validateTask4a() {
     const userOrder = currentFlagsA.map(item => item.id);
     const isCorrect = userOrder.every((id, idx) => id === CORRECT_ORDER_4A[idx]);
@@ -254,7 +263,7 @@ function validateTask4a() {
     }
 }
 
-// Validering for Oppgave 4B
+// Validering for Oppgave 4B (Solo)
 function validateTask4b() {
     const userOrder = currentFlagsB.map(item => item.id);
     const isCorrect = userOrder.every((id, idx) => id === CORRECT_ORDER_4B[idx]);
@@ -270,16 +279,26 @@ function validateTask4b() {
     }
 }
 
-// Initialiser og stokk flaggene tilfeldig ved oppstart
-function initAllFlagTasks() {
-    currentFlagsA = [...flagsDataA].sort(() => Math.random() - 0.5);
+// Oppstart av flagglistene (kalles når skjermen åpnes eller ved start)
+function initFlagTaskA() {
+    if (currentFlagsA.length === 0) {
+        currentFlagsA = [...flagsDataA].sort(() => Math.random() - 0.5);
+    }
     renderFlagListUI('flag-list-4a', currentFlagsA, '4a');
+}
 
-    currentFlagsB = [...flagsDataB].sort(() => Math.random() - 0.5);
+function initFlagTaskB() {
+    if (currentFlagsB.length === 0) {
+        currentFlagsB = [...flagsDataB].sort(() => Math.random() - 0.5);
+    }
     renderFlagListUI('flag-list-4b', currentFlagsB, '4b');
 }
 
-window.addEventListener('DOMContentLoaded', initAllFlagTasks);
+window.addEventListener('DOMContentLoaded', () => {
+    initFlagTaskA();
+    initFlagTaskB();
+});
+
 // ==========================================
 // OPPGAVE 5: TIMEGLASS (BEVEGELSESSENSOR)
 // ==========================================

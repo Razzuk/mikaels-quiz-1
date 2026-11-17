@@ -17,6 +17,31 @@
         <p>Laget deres er låst inne. Dere må løse oppgavene for å komme ut.</p>
         <button onclick="advanceFrom('screen-start')">Start spillet</button>
     </div>
+    <!-- ========================================== -->
+        <!-- MIDLERTIDIG TESTPANEL (DEBUG-MENY)         -->
+        <!-- ========================================== -->
+        <div style="margin-top: 30px; padding: 15px; background: rgba(0, 0, 0, 0.4); border: 2px dashed #ffd700; border-radius: 8px;">
+            <p style="color: #ffd700; font-weight: bold; margin-bottom: 12px; font-size: 15px;">🛠️ TESTPANEL: Hopp direkte til oppgave</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task1')">Oppgave 1</button>
+                
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task2a')">Oppgave 2A</button>
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task2b')">Oppgave 2B</button>
+                
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task3a')">Oppgave 3A</button>
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task3b')">Oppgave 3B</button>
+                
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task4a')">Oppgave 4A (Flagg)</button>
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task4b')">Oppgave 4B (Flagg)</button>
+                
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task5')">Oppgave 5 (Timeglass)</button>
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task6')">Oppgave 6 (Flappy)</button>
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task7')">Oppgave 7 (14916)</button>
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task8')">Oppgave 8 (Waldo)</button>
+                <button type="button" style="padding: 8px; font-size: 13px;" onclick="goToScreen('screen-task9')">Oppgave 9 (Marked)</button>
+            </div>
+        </div>
 
     <!-- ========================================== -->
     <!-- SKJERM 2: Oppgave 1 (Veidele)              -->

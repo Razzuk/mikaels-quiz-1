@@ -254,6 +254,45 @@
     </div>
 
     <!-- ========================================== -->
+    <!-- OPPGAVE 8: FINN 5 JULEOBJEKTER (WALDO)     -->
+    <!-- ========================================== -->
+    <div id="screen-task8" class="screen">
+        <h2>Oppgave 8: Juleleteaksjon</h2>
+        <p>Finn de 5 skjulte julegjenstandene i bildet!</p>
+
+        <!-- Sjekkliste over objekter -->
+        <div id="waldo-checklist" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; font-size: 14px;">
+            <span id="item-0">⚪ 1. Nisselue</span>
+            <span id="item-1">⚪ 2. Pepperkake</span>
+            <span id="item-2">⚪ 3. Pakke</span>
+            <span id="item-3">⚪ 4. Bjelle</span>
+            <span id="item-4">⚪ 5. Candy cane</span>
+        </div>
+
+        <p id="waldo-status" style="font-weight: bold; color: #ffd700; margin-bottom: 8px;">Funnet: 0 / 5</p>
+
+        <!-- Zoom-kontroller -->
+        <div style="margin-bottom: 8px; display: flex; justify-content: center; gap: 10px;">
+            <button type="button" onclick="zoomWaldo(1.3)" style="padding: 6px 14px; font-size: 14px;">➕ Zoom inn</button>
+            <button type="button" onclick="zoomWaldo(0.77)" style="padding: 6px 14px; font-size: 14px;">➖ Zoom ut</button>
+            <button type="button" onclick="resetWaldoZoom()" style="padding: 6px 14px; font-size: 14px;">↺ Nullstill</button>
+        </div>
+
+        <!-- Scroll- og panoreringsvindu -->
+        <div id="waldo-scroll-container" style="max-width: 500px; height: 380px; margin: 0 auto; overflow: auto; border: 2px solid #ffd700; border-radius: 8px; background: #000; position: relative; -webkit-overflow-scrolling: touch;">
+            <div id="waldo-wrapper" style="position: relative; display: inline-block; width: 100%; min-width: 500px; transform-origin: top left; transition: width 0.15s ease;">
+                <img id="waldo-img" src="Waldo.jpg" alt="Finn objektene" style="width: 100%; display: block; user-select: none; pointer-events: auto; cursor: crosshair;">
+            </div>
+        </div>
+
+        <!-- Fullført-boks -->
+        <div id="task8-success" style="display: none; margin-top: 15px;">
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Du fant alle 5 objektene!</p>
+            <button onclick="advanceFrom('screen-task8')">Gå til Oppgave 9</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
     <!-- KOBLING TIL JAVASCRIPT-FILEN               -->
     <!-- ========================================== -->
     <script src="script.js"></script>

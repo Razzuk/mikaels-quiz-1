@@ -2,15 +2,17 @@
 // GLOBALE FUNKSJONER (Navigasjon og hashing)
 // ==========================================
 
-
 function goToScreen(screenId) {
     const screens = document.querySelectorAll('.screen');
     screens.forEach(screen => {
         screen.classList.remove('active');
     });
+
     const target = document.getElementById(screenId);
     if (target) {
         target.classList.add('active');
+
+        // Initialiser flaggoppgavene når spilleren ankommer skjermen
         if (screenId === 'screen-task4a') {
             initFlagTaskA();
         } else if (screenId === 'screen-task4b') {
@@ -18,8 +20,8 @@ function goToScreen(screenId) {
         }
     } else {
         console.error("Fant ikke skjerm med ID:", screenId);
-        }
     }
+}
 
 async function sha256(message) {
     const msgUint8 = new TextEncoder().encode(message);
@@ -29,32 +31,20 @@ async function sha256(message) {
     return hashHex;
 }
 
-// ==========================================
-// SPILLETS REKKEFØLGE (TILSTANDSMASKIN)
-// ==========================================
+// Spillets ruting-kart
 const gameFlow = {
-    'screen-start': 'screen-task1',
-
-    // VEIDELET FRA OPPGAVE 1:
-    'path-oslo': 'screen-task2a', // OSLO sender til Spor A
-    'path-solo': 'screen-task2b', // SOLO sender til Spor B
-
-    // SPOR A (for de som svarte OSLO)
     'screen-task2a': 'screen-task3a',
     'screen-task3a': 'screen-task4a',
-    'screen-task4a': 'screen-task5',  // Samles ved oppgave 5!
+    'screen-task4a': 'screen-task5',
 
-    // SPOR B (for de som svarte SOLO)
     'screen-task2b': 'screen-task3b',
     'screen-task3b': 'screen-task4b',
-    'screen-task4b': 'screen-task5',  // Samles ved oppgave 5!
+    'screen-task4b': 'screen-task5',
 
-    // FELLES LØP VIDERE FRA OPPGAVE 5
     'screen-task5': 'screen-task6',
     'screen-task6': 'screen-task7',
     'screen-task7': 'screen-task8',
-    'screen-task8': 'screen-task9',
-    'screen-task9': 'screen-task10'
+    'screen-task8': 'screen-task9'
 };
 
 function advanceFrom(currentScreenId) {
@@ -62,122 +52,76 @@ function advanceFrom(currentScreenId) {
     if (nextScreen) {
         goToScreen(nextScreen);
     } else {
-        console.error("Ingen rute definert for:", currentScreenId);
+        console.error("Ingen rute definert for skjerm:", currentScreenId);
     }
 }
 
+
 // ==========================================
-// OPPGAVE 1: VALIDERINGS-LOGIKK (OSLO / SOLO)
+// OPPGAVE 1: FORGRENINGEN (OSLO / SOLO)
 // ==========================================
-const HASH_OSLO = '8e016391c88c77d6773deab343b91f53bb64bfbc9ca18101844cb84c3d01e561';
-const HASH_SOLO = '5364f2f2fc4f54e9d47ad29cfb08ef430c8153394bf2a0dff5cbe77a0ffef861';
+const HASH_OSLO = '5898ad16710aebe7cc5582f3beee738bbd1cf36647bc3827ab153a7f6f1a8e10';
+const HASH_SOLO = 'ee44962ebef1cd1f579ae7483d259c6dd372bf95e263ab2df9313d30b91cb2ab';
 
 async function validateTask1() {
     const inputEl = document.getElementById('task1-input');
     const errorEl = document.getElementById('task1-error');
-    
-    const answer = inputEl.value.trim().toLowerCase();
-    const hashedAnswer = await sha256(answer);
+    const val = inputEl.value.trim().toLowerCase();
+    const hash = await sha256(val);
 
-    if (hashedAnswer === HASH_OSLO) {
+    if (hash === HASH_OSLO) {
         errorEl.style.display = 'none';
-        goToScreen(gameFlow['path-oslo']);
-    } else if (hashedAnswer === HASH_SOLO) {
+        goToScreen('screen-task2a');
+    } else if (hash === HASH_SOLO) {
         errorEl.style.display = 'none';
-        goToScreen(gameFlow['path-solo']);
+        goToScreen('screen-task2b');
     } else {
         errorEl.style.display = 'block';
     }
 }
 
-// ==========================================
-// TESTKODER FOR PLACEHOLDERE (SPOR A & B)
-// ==========================================
-const HASH_A2 = '2c3a4249d77070058649dbd822dcaf7957586fce428cfb2ca88b94741eda8b07'; // "a2"
-const HASH_A3 = 'f46dd28a5499d8efef0b8fb8ee1ec1c5a5e407c9381741d576ba8deb4f59ec3f'; // "a3"
-const HASH_A4 = '4539e4b4889079c2a00afeae0bfc1439840ef2379a1fb81c8ba27361ad476d6b'; // "a4"
-
-const HASH_B2 = '4814d92093ac8a0f4a2163ab87dee509ba306a58f5888be0edcb2fcd0712028b'; // "b2"
-const HASH_B3 = '76a8277347f52530e1cf979175a178980b3a180d176165c985d85f7e142f1eed'; // "b3"
-const HASH_B4 = '486bacc5c2d8a71a73d51bf8e522deaa264ec2628dca2955da1e9b8e00f21943'; // "b4"
-
-async function validateTask2a() {
-    const val = document.getElementById('task2a-input').value.trim().toLowerCase();
-    const hash = await sha256(val);
-    if (hash === HASH_A2) {
-        document.getElementById('task2a-error').style.display = 'none';
-        advanceFrom('screen-task2a');
-    } else {
-        document.getElementById('task2a-error').style.display = 'block';
-    }
-}
-
-async function validateTask3a() {
-    const val = document.getElementById('task3a-input').value.trim().toLowerCase();
-    const hash = await sha256(val);
-    if (hash === HASH_A3) {
-        document.getElementById('task3a-error').style.display = 'none';
-        advanceFrom('screen-task3a');
-    } else {
-        document.getElementById('task3a-error').style.display = 'block';
-    }
-}
 
 // ==========================================
-// OPPGAVE 4A & 4B: FLAGG-SORTERING
+// OPPGAVER 2 & 3: TRIVIA FOR SPOR A OG B
+// ==========================================
+async function validateTask2a() { advanceFrom('screen-task2a'); }
+async function validateTask3a() { advanceFrom('screen-task3a'); }
+async function validateTask2b() { advanceFrom('screen-task2b'); }
+async function validateTask3b() { advanceFrom('screen-task3b'); }
+
+
+// ==========================================
+// OPPGAVE 4A & 4B: FLAGG-SORTERING (MED EMOJIS)
 // ==========================================
 
-// SPOR A: Flaggdata og fasit (Argentina -> Hellas)
+// SPOR A: Flaggdata og fasit (A–H: Argentina -> Hellas)
 const flagsDataA = [
-    { id: 'AR', name: 'Argentina', code: 'ar' },
-    { id: 'BE', name: 'Belgia',    code: 'be' },
-    { id: 'CL', name: 'Chile',     code: 'cl' },
-    { id: 'DK', name: 'Danmark',   code: 'dk' },
-    { id: 'EG', name: 'Egypt',     code: 'eg' },
-    { id: 'FI', name: 'Finland',   code: 'fi' },
-    { id: 'GH', name: 'Ghana',     code: 'gh' },
-    { id: 'GR', name: 'Hellas',    code: 'gr' }
+    { id: 'AR', name: 'Argentina', flag: '🇦🇷' },
+    { id: 'BE', name: 'Belgia',    flag: '🇧🇪' },
+    { id: 'CL', name: 'Chile',     flag: '🇨🇱' },
+    { id: 'DK', name: 'Danmark',   flag: '🇩🇰' },
+    { id: 'EG', name: 'Egypt',     flag: '🇪🇬' },
+    { id: 'FI', name: 'Finland',   flag: '🇫🇮' },
+    { id: 'GH', name: 'Ghana',     flag: '🇬🇭' },
+    { id: 'GR', name: 'Hellas',    flag: '🇬🇷' }
 ];
 const CORRECT_ORDER_4A = ['AR', 'BE', 'CL', 'DK', 'EG', 'FI', 'GH', 'GR'];
 let currentFlagsA = [];
 
-async function validateTask2b() {
-    const val = document.getElementById('task2b-input').value.trim().toLowerCase();
-    const hash = await sha256(val);
-    if (hash === HASH_B2) {
-        document.getElementById('task2b-error').style.display = 'none';
-        advanceFrom('screen-task2b');
-    } else {
-        document.getElementById('task2b-error').style.display = 'block';
-    }
-}
-
-async function validateTask3b() {
-    const val = document.getElementById('task3b-input').value.trim().toLowerCase();
-    const hash = await sha256(val);
-    if (hash === HASH_B3) {
-        document.getElementById('task3b-error').style.display = 'none';
-        advanceFrom('screen-task3b');
-    } else {
-        document.getElementById('task3b-error').style.display = 'block';
-    }
-}
-
-// SPOR B: Flaggdata og fasit (Island -> Spania)
+// SPOR B: Flaggdata og fasit (I–S: Island -> Spania)
 const flagsDataB = [
-    { id: 'IS', name: 'Island',  code: 'is' },
-    { id: 'JP', name: 'Japan',   code: 'jp' },
-    { id: 'KE', name: 'Kenya',   code: 'ke' },
-    { id: 'LB', name: 'Libanon', code: 'lb' },
-    { id: 'MX', name: 'Mexico',  code: 'mx' },
-    { id: 'NO', name: 'Norge',   code: 'no' },
-    { id: 'PL', name: 'Polen',   code: 'pl' },
-    { id: 'ES', name: 'Spania',  code: 'es' }
+    { id: 'IS', name: 'Island',  flag: '🇮🇸' },
+    { id: 'JP', name: 'Japan',   flag: '🇯🇵' },
+    { id: 'KE', name: 'Kenya',   flag: '🇰🇪' },
+    { id: 'LB', name: 'Libanon', flag: '🇱🇧' },
+    { id: 'MX', name: 'Mexico',  flag: '🇲🇽' },
+    { id: 'NO', name: 'Norge',   flag: '🇳🇴' },
+    { id: 'PL', name: 'Polen',   flag: '🇵🇱' },
+    { id: 'ES', name: 'Spania',  flag: '🇪🇸' }
 ];
 const CORRECT_ORDER_4B = ['IS', 'JP', 'KE', 'LB', 'MX', 'NO', 'PL', 'ES'];
 let currentFlagsB = [];
 
-// Funksjon som tegner flagglisten med ekte bilder
 function renderFlagListUI(containerId, flagList, track) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -194,21 +138,17 @@ function renderFlagListUI(containerId, flagList, track) {
         row.style.borderRadius = '6px';
         row.style.padding = '8px 12px';
 
-        // Venstre side: Nummerering og selve flaggbildet
+        // Venstre side: Nummerering og flagg-emoji
         const label = document.createElement('div');
         label.style.display = 'flex';
         label.style.alignItems = 'center';
         label.style.gap = '12px';
-
-        // Bruker FlagCDN for å hente flaggene i fast størrelse
         label.innerHTML = `
             <span style="font-size: 16px; font-weight: bold; color: #ffd700; width: 22px;">${index + 1}.</span> 
-            <img src="[suspicious link removed]{item.code}.png" 
-                 alt="Flagg" 
-                 style="width: 48px; height: 32px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); display: block;">
+            <span style="font-size: 30px; line-height: 1;">${item.flag}</span>
         `;
 
-        // Høyre side: Opp- og ned-knapper
+        // Høyre side: Opp/ned-knapper
         const btnGroup = document.createElement('div');
         btnGroup.style.display = 'flex';
         btnGroup.style.gap = '6px';
@@ -236,13 +176,11 @@ function renderFlagListUI(containerId, flagList, track) {
     });
 }
 
-// Flytt flagg opp eller ned i listen
 function moveFlagItem(track, index, direction) {
     const list = (track === '4a') ? currentFlagsA : currentFlagsB;
     const targetIndex = index + direction;
     if (targetIndex < 0 || targetIndex >= list.length) return;
 
-    // Bytt plass
     const temp = list[index];
     list[index] = list[targetIndex];
     list[targetIndex] = temp;
@@ -254,7 +192,6 @@ function moveFlagItem(track, index, direction) {
     }
 }
 
-// Validering for Oppgave 4A (Oslo)
 function validateTask4a() {
     const userOrder = currentFlagsA.map(item => item.id);
     const isCorrect = userOrder.every((id, idx) => id === CORRECT_ORDER_4A[idx]);
@@ -270,7 +207,6 @@ function validateTask4a() {
     }
 }
 
-// Validering for Oppgave 4B (Solo)
 function validateTask4b() {
     const userOrder = currentFlagsB.map(item => item.id);
     const isCorrect = userOrder.every((id, idx) => id === CORRECT_ORDER_4B[idx]);
@@ -286,7 +222,6 @@ function validateTask4b() {
     }
 }
 
-// Oppstart av flagglistene (kalles når skjermen åpnes eller ved start)
 function initFlagTaskA() {
     if (currentFlagsA.length === 0) {
         currentFlagsA = [...flagsDataA].sort(() => Math.random() - 0.5);
@@ -301,253 +236,95 @@ function initFlagTaskB() {
     renderFlagListUI('flag-list-4b', currentFlagsB, '4b');
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    initFlagTaskA();
-    initFlagTaskB();
-});
 
 // ==========================================
-// OPPGAVE 5: TIMEGLASS (BEVEGELSESSENSOR)
+// OPPGAVE 5: TIMEGLASSET (GYROSKOP / SENSOR)
 // ==========================================
-let timeInSeconds = 45;         // Starter nå på 45 sekunder
-const TARGET_TIME = 60;         // Ferdig i det displayet når 60 sekunder (01:00)
+let hourglassTimer = null;
+let currentRemainingSeconds = 60;
 let isUpsideDown = false;
-let timerInterval = null;
-let orientationListenerActive = false;
+let isSensorActive = false;
 
-function startTask5() {
+function initHourglass() {
+    if (isSensorActive) return;
+
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    initHourglass();
+            .then(response => {
+                if (response === 'granted') {
+                    startHourglassTracking();
                 } else {
-                    alert("Vi trenger tilgang til bevegelsessensoren for å løse gåten!");
+                    alert('Sensor-tilgang ble avvist. Oppgaven krever bevegelsessensor.');
                 }
             })
             .catch(console.error);
     } else {
-        initHourglass();
+        startHourglassTracking();
     }
 }
 
-function handleOrientation(event) {
-    // Når telefonen snus opp ned (beta under -45 grader)
-    if (event.beta < -45) {
-        isUpsideDown = true;
-        document.getElementById('hourglass-icon').style.transform = "rotate(180deg)";
-    } else {
-        isUpsideDown = false;
-        document.getElementById('hourglass-icon').style.transform = "rotate(0deg)";
-    }
-}
+function startHourglassTracking() {
+    isSensorActive = true;
+    const btn = document.getElementById('btn-sensor-start');
+    if (btn) btn.style.display = 'none';
 
-function initHourglass() {
-    document.getElementById('task5-intro').style.display = 'none';
-    document.getElementById('task5-content').style.display = 'block';
-    document.getElementById('task5-gameover').style.display = 'none';
-    document.getElementById('task5-success').style.display = 'none';
+    window.addEventListener('deviceorientation', handleOrientation);
 
-    if (!orientationListenerActive) {
-        window.addEventListener('deviceorientation', handleOrientation);
-        orientationListenerActive = true;
-    }
-
-    startTimerLoop();
-}
-
-function updateTimerDisplay() {
-    let minutes = Math.floor(timeInSeconds / 60);
-    let seconds = timeInSeconds % 60;
-    let timeString = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-    document.getElementById('timer-display').innerText = timeString;
-}
-
-function startTimerLoop() {
-    clearInterval(timerInterval);
-    updateTimerDisplay();
-
-    timerInterval = setInterval(() => {
+    hourglassTimer = setInterval(() => {
         if (isUpsideDown) {
-            timeInSeconds++; // Teller opp mot målet på 60 sekunder
-        } else {
-            timeInSeconds--; // Teller ned mot 0
-        }
+            currentRemainingSeconds--;
+            updateHourglassUI();
 
-        updateTimerDisplay();
-
-        // I det sekundet displayet treffer 60 sekunder (01:00) vinner de!
-        if (timeInSeconds >= TARGET_TIME) {
-            clearInterval(timerInterval);
-            document.getElementById('task5-success').style.display = 'block';
-            document.getElementById('task5-hint').style.display = 'none';
-        } 
-        // Hvis displayet når 00:00 taper de
-        else if (timeInSeconds <= 0) {
-            timeInSeconds = 0;
-            updateTimerDisplay();
-            clearInterval(timerInterval);
-            document.getElementById('task5-gameover').style.display = 'block';
+            if (currentRemainingSeconds <= 0) {
+                clearInterval(hourglassTimer);
+                window.removeEventListener('deviceorientation', handleOrientation);
+                document.getElementById('screen-task5-success').style.display = 'block';
+            }
         }
     }, 1000);
 }
 
-// Funksjon for "Prøv på nytt"-knappen
-function resetTask5() {
-    timeInSeconds = 45; // Nullstilles tilbake til 45 sekunder
-    document.getElementById('task5-gameover').style.display = 'none';
-    startTimerLoop();
+function handleOrientation(event) {
+    const beta = event.beta;
+    if (beta === null) return;
+
+    // Enheten regnes som opp-ned hvis beta er lavere enn -60 grader
+    if (beta < -60) {
+        isUpsideDown = true;
+        document.getElementById('hourglass-hint').innerText = "Bra! Sanden renner bakover...";
+        document.getElementById('hourglass-hint').style.color = "#4ade80";
+    } else {
+        isUpsideDown = false;
+        document.getElementById('hourglass-hint').innerText = "Snu mobilen helt opp-ned for å tømme glasset!";
+        document.getElementById('hourglass-hint').style.color = "#ffd700";
+    }
 }
 
+function updateHourglassUI() {
+    const timeDisplay = document.getElementById('hourglass-time');
+    if (timeDisplay) {
+        timeDisplay.innerText = `${currentRemainingSeconds}s`;
+    }
+}
+
+
 // ==========================================
-// OPPGAVE 6: FLAPPY SANTA SPILL-LOGIKK
+// OPPGAVE 6: FLAPPY BIRD
 // ==========================================
-let canvas, ctx;
-let santaY, santaVelocity, santaGravity, santaJump;
-let pipes = [];
 let flappyScore = 0;
-let isFlappyRunning = false;
-let flappyAnimationId;
-let pipeTimer = 0;
+const FLAPPY_GOAL = 10;
 
-function initFlappyCanvas() {
-    canvas = document.getElementById('flappy-canvas');
-    if (!canvas) return;
-    ctx = canvas.getContext('2d');
+function jumpBird() {
+    // Enkel klikk-mekanikk for demonstrasjon / mobiltest
+    flappyScore++;
+    const scoreDisplay = document.getElementById('flappy-score');
+    if (scoreDisplay) scoreDisplay.innerText = flappyScore;
 
-    canvas.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        flapSanta();
-    });
-
-    window.addEventListener('keydown', (e) => {
-        if (e.code === 'Space' && isFlappyRunning) {
-            e.preventDefault();
-            flapSanta();
-        }
-    });
-}
-
-function flapSanta() {
-    if (isFlappyRunning) {
-        santaVelocity = santaJump;
+    if (flappyScore >= FLAPPY_GOAL) {
+        document.getElementById('flappy-success').style.display = 'block';
     }
 }
 
-function startFlappyGame() {
-    if (!canvas) initFlappyCanvas();
-
-    document.getElementById('flappy-overlay').style.display = 'none';
-    document.getElementById('task6-success').style.display = 'none';
-
-    santaY = 180;
-    santaVelocity = 0;
-    santaGravity = 0.28;
-    santaJump = -5.5;
-    pipes = [];
-    flappyScore = 0;
-    pipeTimer = 0;
-    isFlappyRunning = true;
-
-    cancelAnimationFrame(flappyAnimationId);
-    flappyGameLoop();
-}
-
-function flappyGameLoop() {
-    if (!isFlappyRunning) return;
-
-    santaVelocity += santaGravity;
-    santaY += santaVelocity;
-
-    pipeTimer++;
-    if (pipeTimer % 95 === 0) {
-        const gap = 115;
-        const minHeight = 40;
-        const topHeight = Math.floor(Math.random() * (canvas.height - gap - minHeight * 2)) + minHeight;
-        pipes.push({
-            x: canvas.width,
-            top: topHeight,
-            bottom: topHeight + gap,
-            passed: false
-        });
-    }
-
-    for (let i = 0; i < pipes.length; i++) {
-        let p = pipes[i];
-        p.x -= 1.8;
-
-        if (!p.passed && p.x + 35 < 50) {
-            p.passed = true;
-            flappyScore++;
-
-            if (flappyScore >= 20) {
-                winFlappyGame();
-                return;
-            }
-        }
-
-        const santaX = 50;
-        const santaRadius = 12;
-
-        if (santaX + santaRadius > p.x && santaX - santaRadius < p.x + 40) {
-            if (santaY - santaRadius < p.top || santaY + santaRadius > p.bottom) {
-                gameOverFlappy();
-                return;
-            }
-        }
-    }
-
-    pipes = pipes.filter(p => p.x > -50);
-
-    if (santaY > canvas.height - 15 || santaY < 10) {
-        gameOverFlappy();
-        return;
-    }
-
-    drawFlappyScene();
-    flappyAnimationId = requestAnimationFrame(flappyGameLoop);
-}
-
-function drawFlappyScene() {
-    ctx.fillStyle = '#071326';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    for (let p of pipes) {
-        ctx.fillStyle = '#8b1e2a';
-        ctx.fillRect(p.x, 0, 40, p.top);
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(p.x - 2, p.top - 6, 44, 6);
-
-        ctx.fillStyle = '#8b1e2a';
-        ctx.fillRect(p.x, p.bottom, 40, canvas.height - p.bottom);
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(p.x - 2, p.bottom, 44, 6);
-    }
-
-    ctx.font = '28px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('🎅', 50, santaY);
-
-    ctx.fillStyle = '#ffd700';
-    ctx.font = 'bold 16px sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText(`Poeng: ${flappyScore} / 30`, 15, 28);
-}
-
-function gameOverFlappy() {
-    isFlappyRunning = false;
-    document.getElementById('flappy-msg').innerHTML = `Du krasjet på ${flappyScore} poeng!<br>Prøv igjen!`;
-    document.getElementById('flappy-overlay').style.display = 'flex';
-}
-
-function winFlappyGame() {
-    isFlappyRunning = false;
-    drawFlappyScene();
-    document.getElementById('task6-success').style.display = 'block';
-}
-
-window.addEventListener('DOMContentLoaded', initFlappyCanvas);
 
 // ==========================================
 // OPPGAVE 7: PUSLESPILLET (KODE: 14916)
@@ -557,15 +334,94 @@ const HASH_TASK7 = '0cba2fa7ffebce9bb31e312ee655e6c071e3e83dadeca2d5a75a67a0a9aa
 async function validateTask7() {
     const inputEl = document.getElementById('task7-input');
     const errorEl = document.getElementById('task7-error');
-    
-    // Fjerner eventuelle utilsiktede mellomrom som spilleren taster inn
     const val = inputEl.value.replace(/\s+/g, '');
     const hash = await sha256(val);
 
     if (hash === HASH_TASK7) {
         errorEl.style.display = 'none';
-        advanceFrom('screen-task7'); // Ruter dem automatisk videre til screen-task8!
+        advanceFrom('screen-task7');
     } else {
         errorEl.style.display = 'block';
     }
 }
+
+
+// ==========================================
+// OPPGAVE 8: FINN 5 JULEOBJEKTER (WALDO)
+// ==========================================
+const waldoTargets = [
+    { name: "Nisselue",   x: 24.5, y: 35.0, radius: 3.5, found: false },
+    { name: "Pepperkake", x: 62.0, y: 18.5, radius: 3.5, found: false },
+    { name: "Pakke",      x: 81.2, y: 74.0, radius: 3.5, found: false },
+    { name: "Bjelle",     x: 12.8, y: 82.3, radius: 3.5, found: false },
+    { name: "Candy cane", x: 45.0, y: 56.7, radius: 3.5, found: false }
+];
+
+let waldoFoundCount = 0;
+
+function initWaldoTask() {
+    const img = document.getElementById('waldo-img');
+    const wrapper = document.getElementById('waldo-wrapper');
+    if (!img || !wrapper) return;
+
+    img.addEventListener('click', (event) => {
+        const rect = img.getBoundingClientRect();
+        const clickX = ((event.clientX - rect.left) / rect.width) * 100;
+        const clickY = ((event.clientY - rect.top) / rect.height) * 100;
+
+        console.log(`Klikket på: x: ${clickX.toFixed(1)}%, y: ${clickY.toFixed(1)}%`);
+
+        waldoTargets.forEach((target, index) => {
+            if (!target.found) {
+                const distance = Math.hypot(clickX - target.x, clickY - target.y);
+                if (distance <= target.radius) {
+                    target.found = true;
+                    waldoFoundCount++;
+                    markTargetFound(target, index, wrapper);
+                }
+            }
+        });
+    });
+}
+
+function markTargetFound(target, index, wrapper) {
+    const marker = document.createElement('div');
+    marker.style.position = 'absolute';
+    marker.style.left = `${target.x}%`;
+    marker.style.top = `${target.y}%`;
+    marker.style.width = '36px';
+    marker.style.height = '36px';
+    marker.style.border = '3px solid #ffd700';
+    marker.style.backgroundColor = 'rgba(196, 30, 58, 0.4)';
+    marker.style.borderRadius = '50%';
+    marker.style.transform = 'translate(-50%, -50%)';
+    marker.style.pointerEvents = 'none';
+    marker.style.boxShadow = '0 0 8px #ffd700';
+    wrapper.appendChild(marker);
+
+    const itemEl = document.getElementById(`item-${index}`);
+    if (itemEl) {
+        itemEl.innerHTML = `🟢 ${index + 1}. <del>${target.name}</del>`;
+        itemEl.style.color = '#4ade80';
+    }
+
+    const statusEl = document.getElementById('waldo-status');
+    if (statusEl) {
+        statusEl.innerText = `Funnet: ${waldoFoundCount} / 5`;
+    }
+
+    if (waldoFoundCount >= 5) {
+        const successEl = document.getElementById('task8-success');
+        if (successEl) successEl.style.display = 'block';
+    }
+}
+
+
+// ==========================================
+// OPPSTART VED SIDELASTING
+// ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+    initFlagTaskA();
+    initFlagTaskB();
+    initWaldoTask();
+});

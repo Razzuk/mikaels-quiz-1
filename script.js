@@ -183,32 +183,32 @@ async function validateTask3b() {
 // OPPGAVE 4A & 4B: FLAGG-SORTERING (EMOJIS)
 // ==========================================
 
-// Spor A (A–H)
+// SPOR A: Obskure flagg (Bhutan -> Nauru)
 const flagsDataA = [
-    { id: 'AR', name: 'Argentina', flag: '🇦🇷' },
-    { id: 'BE', name: 'Belgia',    flag: '🇧🇪' },
-    { id: 'CL', name: 'Chile',     flag: '🇨🇱' },
-    { id: 'DK', name: 'Danmark',   flag: '🇩🇰' },
-    { id: 'EG', name: 'Egypt',     flag: '🇪🇬' },
-    { id: 'FI', name: 'Finland',   flag: '🇫🇮' },
-    { id: 'GH', name: 'Ghana',     flag: '🇬🇭' },
-    { id: 'GR', name: 'Hellas',    flag: '🇬🇷' }
+    { id: 'BT', name: 'Bhutan',     flag: '🇧🇹' },
+    { id: 'DJ', name: 'Djibouti',   flag: '🇩🇯' },
+    { id: 'SZ', name: 'Eswatini',   flag: '🇸🇿' },
+    { id: 'GD', name: 'Grenada',    flag: '🇬🇩' },
+    { id: 'KI', name: 'Kiribati',   flag: '🇰🇮' },
+    { id: 'LS', name: 'Lesotho',    flag: '🇱🇸' },
+    { id: 'MR', name: 'Mauritania', flag: '🇲🇷' },
+    { id: 'NR', name: 'Nauru',      flag: '🇳🇷' }
 ];
-const CORRECT_ORDER_4A = ['AR', 'BE', 'CL', 'DK', 'EG', 'FI', 'GH', 'GR'];
+const CORRECT_ORDER_4A = ['BT', 'DJ', 'SZ', 'GD', 'KI', 'LS', 'MR', 'NR'];
 let currentFlagsA = [];
 
-// Spor B (I–S)
+// SPOR B: Obskure flagg (Belize -> Zimbabwe)
 const flagsDataB = [
-    { id: 'IS', name: 'Island',  flag: '🇮🇸' },
-    { id: 'JP', name: 'Japan',   flag: '🇯🇵' },
-    { id: 'KE', name: 'Kenya',   flag: '🇰🇪' },
-    { id: 'LB', name: 'Libanon', flag: '🇱🇧' },
-    { id: 'MX', name: 'Mexico',  flag: '🇲🇽' },
-    { id: 'NO', name: 'Norge',   flag: '🇳🇴' },
-    { id: 'PL', name: 'Polen',   flag: '🇵🇱' },
-    { id: 'ES', name: 'Spania',  flag: '🇪🇸' }
+    { id: 'BZ', name: 'Belize',   flag: '🇧🇿' },
+    { id: 'KM', name: 'Komorene', flag: '🇰🇲' },
+    { id: 'MW', name: 'Malawi',   flag: '🇲🇼' },
+    { id: 'PW', name: 'Palau',    flag: '🇵🇼' },
+    { id: 'SR', name: 'Surinam',  flag: '🇸🇷' },
+    { id: 'TV', name: 'Tuvalu',   flag: '🇹🇻' },
+    { id: 'VU', name: 'Vanuatu',  flag: '🇻🇺' },
+    { id: 'ZW', name: 'Zimbabwe', flag: '🇿🇼' }
 ];
-const CORRECT_ORDER_4B = ['IS', 'JP', 'KE', 'LB', 'MX', 'NO', 'PL', 'ES'];
+const CORRECT_ORDER_4B = ['BZ', 'KM', 'MW', 'PW', 'SR', 'TV', 'VU', 'ZW'];
 let currentFlagsB = [];
 
 function renderFlagListUI(containerId, flagList, track) {

@@ -102,19 +102,33 @@ async function validateTask1() {
 // ==========================================
 // TESTKODER FOR PLACEHOLDERE (SPOR A & B)
 // ==========================================
-const HASH_A2 = '2c3a4249d77070058649dbd822dcaf7957586fce428cfb2ca88b94741eda8b07'; // "a2"
+
 const HASH_A3 = 'f46dd28a5499d8efef0b8fb8ee1ec1c5a5e407c9381741d576ba8deb4f59ec3f'; // "a3"
 const HASH_B2 = '4814d92093ac8a0f4a2163ab87dee509ba306a58f5888be0edcb2fcd0712028b'; // "b2"
 const HASH_B3 = '76a8277347f52530e1cf979175a178980b3a180d176165c985d85f7e142f1eed'; // "b3"
 
+// Hashen for tallet 6770130840 (1969 * 9551 * 24 * 15)
+const HASH_A2 = 'a0f55f635a6f4c4fa6fd9a05f0b2be06f817a0e0bb83fc3cdd795f546f94657d';
+
 async function validateTask2a() {
-    const val = document.getElementById('task2a-input').value.trim().toLowerCase();
+    const inputEl = document.getElementById('task2a-input');
+    const errorEl = document.getElementById('task2a-error');
+    if (!inputEl) return;
+
+    // Fjerner eventuelle mellomrom (f.eks. om noen skriver 6 770 130 840)
+    const val = inputEl.value.replace(/\s+/g, '');
     const hash = await sha256(val);
+
     if (hash === HASH_A2) {
-        document.getElementById('task2a-error').style.display = 'none';
-        advanceFrom('screen-task2a');
+        if (errorEl) errorEl.style.display = 'none';
+        const successEl = document.getElementById('task2a-success');
+        if (successEl) {
+            successEl.style.display = 'block';
+        } else {
+            advanceFrom('screen-task2a');
+        }
     } else {
-        document.getElementById('task2a-error').style.display = 'block';
+        if (errorEl) errorEl.style.display = 'block';
     }
 }
 

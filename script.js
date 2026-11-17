@@ -12,7 +12,7 @@ function goToScreen(screenId) {
     if (target) {
         target.classList.add('active');
 
-        // Initialiser flaggoppgavene når spilleren ankommer skjermen
+        // Initialiser flaggene hvis man ankommer oppgave 4A eller 4B
         if (screenId === 'screen-task4a') {
             initFlagTaskA();
         } else if (screenId === 'screen-task4b') {
@@ -23,6 +23,11 @@ function goToScreen(screenId) {
     }
 }
 
+// Både startGame() og advanceFrom('screen-start') støttes
+function startGame() {
+    goToScreen('screen-task1');
+}
+
 async function sha256(message) {
     const msgUint8 = new TextEncoder().encode(message);
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
@@ -31,16 +36,27 @@ async function sha256(message) {
     return hashHex;
 }
 
-// Spillets ruting-kart
+// ==========================================
+// SPILLETS REKKEFØLGE (TILSTANDSMASKIN)
+// ==========================================
 const gameFlow = {
+    'screen-start': 'screen-task1',
+
+    // VEIDELET FRA OPPGAVE 1:
+    'path-oslo': 'screen-task2a',
+    'path-solo': 'screen-task2b',
+
+    // SPOR A (OSLO)
     'screen-task2a': 'screen-task3a',
     'screen-task3a': 'screen-task4a',
     'screen-task4a': 'screen-task5',
 
+    // SPOR B (SOLO)
     'screen-task2b': 'screen-task3b',
     'screen-task3b': 'screen-task4b',
     'screen-task4b': 'screen-task5',
 
+    // FELLES LØP FRA OPPGAVE 5
     'screen-task5': 'screen-task6',
     'screen-task6': 'screen-task7',
     'screen-task7': 'screen-task8',
@@ -52,49 +68,95 @@ function advanceFrom(currentScreenId) {
     if (nextScreen) {
         goToScreen(nextScreen);
     } else {
-        console.error("Ingen rute definert for skjerm:", currentScreenId);
+        console.error("Ingen rute definert for:", currentScreenId);
     }
 }
 
 
 // ==========================================
-// OPPGAVE 1: FORGRENINGEN (OSLO / SOLO)
+// OPPGAVE 1: VALIDERINGS-LOGIKK (OSLO / SOLO)
 // ==========================================
-const HASH_OSLO = '5898ad16710aebe7cc5582f3beee738bbd1cf36647bc3827ab153a7f6f1a8e10';
-const HASH_SOLO = 'ee44962ebef1cd1f579ae7483d259c6dd372bf95e263ab2df9313d30b91cb2ab';
+const HASH_OSLO = '8e016391c88c77d6773deab343b91f53bb64bfbc9ca18101844cb84c3d01e561';
+const HASH_SOLO = '5364f2f2fc4f54e9d47ad29cfb08ef430c8153394bf2a0dff5cbe77a0ffef861';
 
 async function validateTask1() {
     const inputEl = document.getElementById('task1-input');
     const errorEl = document.getElementById('task1-error');
-    const val = inputEl.value.trim().toLowerCase();
-    const hash = await sha256(val);
+    if (!inputEl) return;
 
-    if (hash === HASH_OSLO) {
-        errorEl.style.display = 'none';
-        goToScreen('screen-task2a');
-    } else if (hash === HASH_SOLO) {
-        errorEl.style.display = 'none';
-        goToScreen('screen-task2b');
+    const answer = inputEl.value.trim().toLowerCase();
+    const hashedAnswer = await sha256(answer);
+
+    if (hashedAnswer === HASH_OSLO) {
+        if (errorEl) errorEl.style.display = 'none';
+        goToScreen(gameFlow['path-oslo']);
+    } else if (hashedAnswer === HASH_SOLO) {
+        if (errorEl) errorEl.style.display = 'none';
+        goToScreen(gameFlow['path-solo']);
     } else {
-        errorEl.style.display = 'block';
+        if (errorEl) errorEl.style.display = 'block';
     }
 }
 
 
 // ==========================================
-// OPPGAVER 2 & 3: TRIVIA FOR SPOR A OG B
+// TESTKODER FOR PLACEHOLDERE (SPOR A & B)
 // ==========================================
-async function validateTask2a() { advanceFrom('screen-task2a'); }
-async function validateTask3a() { advanceFrom('screen-task3a'); }
-async function validateTask2b() { advanceFrom('screen-task2b'); }
-async function validateTask3b() { advanceFrom('screen-task3b'); }
+const HASH_A2 = '2c3a4249d77070058649dbd822dcaf7957586fce428cfb2ca88b94741eda8b07'; // "a2"
+const HASH_A3 = 'f46dd28a5499d8efef0b8fb8ee1ec1c5a5e407c9381741d576ba8deb4f59ec3f'; // "a3"
+const HASH_B2 = '4814d92093ac8a0f4a2163ab87dee509ba306a58f5888be0edcb2fcd0712028b'; // "b2"
+const HASH_B3 = '76a8277347f52530e1cf979175a178980b3a180d176165c985d85f7e142f1eed'; // "b3"
+
+async function validateTask2a() {
+    const val = document.getElementById('task2a-input').value.trim().toLowerCase();
+    const hash = await sha256(val);
+    if (hash === HASH_A2) {
+        document.getElementById('task2a-error').style.display = 'none';
+        advanceFrom('screen-task2a');
+    } else {
+        document.getElementById('task2a-error').style.display = 'block';
+    }
+}
+
+async function validateTask3a() {
+    const val = document.getElementById('task3a-input').value.trim().toLowerCase();
+    const hash = await sha256(val);
+    if (hash === HASH_A3) {
+        document.getElementById('task3a-error').style.display = 'none';
+        advanceFrom('screen-task3a');
+    } else {
+        document.getElementById('task3a-error').style.display = 'block';
+    }
+}
+
+async function validateTask2b() {
+    const val = document.getElementById('task2b-input').value.trim().toLowerCase();
+    const hash = await sha256(val);
+    if (hash === HASH_B2) {
+        document.getElementById('task2b-error').style.display = 'none';
+        advanceFrom('screen-task2b');
+    } else {
+        document.getElementById('task2b-error').style.display = 'block';
+    }
+}
+
+async function validateTask3b() {
+    const val = document.getElementById('task3b-input').value.trim().toLowerCase();
+    const hash = await sha256(val);
+    if (hash === HASH_B3) {
+        document.getElementById('task3b-error').style.display = 'none';
+        advanceFrom('screen-task3b');
+    } else {
+        document.getElementById('task3b-error').style.display = 'block';
+    }
+}
 
 
 // ==========================================
-// OPPGAVE 4A & 4B: FLAGG-SORTERING (MED EMOJIS)
+// OPPGAVE 4A & 4B: FLAGG-SORTERING (EMOJIS)
 // ==========================================
 
-// SPOR A: Flaggdata og fasit (A–H: Argentina -> Hellas)
+// Spor A (A–H)
 const flagsDataA = [
     { id: 'AR', name: 'Argentina', flag: '🇦🇷' },
     { id: 'BE', name: 'Belgia',    flag: '🇧🇪' },
@@ -108,7 +170,7 @@ const flagsDataA = [
 const CORRECT_ORDER_4A = ['AR', 'BE', 'CL', 'DK', 'EG', 'FI', 'GH', 'GR'];
 let currentFlagsA = [];
 
-// SPOR B: Flaggdata og fasit (I–S: Island -> Spania)
+// Spor B (I–S)
 const flagsDataB = [
     { id: 'IS', name: 'Island',  flag: '🇮🇸' },
     { id: 'JP', name: 'Japan',   flag: '🇯🇵' },
@@ -138,7 +200,6 @@ function renderFlagListUI(containerId, flagList, track) {
         row.style.borderRadius = '6px';
         row.style.padding = '8px 12px';
 
-        // Venstre side: Nummerering og flagg-emoji
         const label = document.createElement('div');
         label.style.display = 'flex';
         label.style.alignItems = 'center';
@@ -148,7 +209,6 @@ function renderFlagListUI(containerId, flagList, track) {
             <span style="font-size: 30px; line-height: 1;">${item.flag}</span>
         `;
 
-        // Høyre side: Opp/ned-knapper
         const btnGroup = document.createElement('div');
         btnGroup.style.display = 'flex';
         btnGroup.style.gap = '6px';
@@ -238,91 +298,240 @@ function initFlagTaskB() {
 
 
 // ==========================================
-// OPPGAVE 5: TIMEGLASSET (GYROSKOP / SENSOR)
+// OPPGAVE 5: TIMEGLASS (BEVEGELSESSENSOR)
 // ==========================================
-let hourglassTimer = null;
-let currentRemainingSeconds = 60;
+let timeInSeconds = 45;
+const TARGET_TIME = 60;
 let isUpsideDown = false;
-let isSensorActive = false;
+let timerInterval = null;
+let orientationListenerActive = false;
 
-function initHourglass() {
-    if (isSensorActive) return;
-
+function startTask5() {
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
-            .then(response => {
-                if (response === 'granted') {
-                    startHourglassTracking();
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    initHourglass();
                 } else {
-                    alert('Sensor-tilgang ble avvist. Oppgaven krever bevegelsessensor.');
+                    alert("Vi trenger tilgang til bevegelsessensoren for å løse gåten!");
                 }
             })
             .catch(console.error);
     } else {
-        startHourglassTracking();
+        initHourglass();
     }
 }
 
-function startHourglassTracking() {
-    isSensorActive = true;
-    const btn = document.getElementById('btn-sensor-start');
-    if (btn) btn.style.display = 'none';
+function handleOrientation(event) {
+    if (event.beta < -45) {
+        isUpsideDown = true;
+        document.getElementById('hourglass-icon').style.transform = "rotate(180deg)";
+    } else {
+        isUpsideDown = false;
+        document.getElementById('hourglass-icon').style.transform = "rotate(0deg)";
+    }
+}
 
-    window.addEventListener('deviceorientation', handleOrientation);
+function initHourglass() {
+    document.getElementById('task5-intro').style.display = 'none';
+    document.getElementById('task5-content').style.display = 'block';
+    document.getElementById('task5-gameover').style.display = 'none';
+    document.getElementById('task5-success').style.display = 'none';
 
-    hourglassTimer = setInterval(() => {
+    if (!orientationListenerActive) {
+        window.addEventListener('deviceorientation', handleOrientation);
+        orientationListenerActive = true;
+    }
+
+    startTimerLoop();
+}
+
+function updateTimerDisplay() {
+    let minutes = Math.floor(timeInSeconds / 60);
+    let seconds = timeInSeconds % 60;
+    let timeString = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+    document.getElementById('timer-display').innerText = timeString;
+}
+
+function startTimerLoop() {
+    clearInterval(timerInterval);
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
         if (isUpsideDown) {
-            currentRemainingSeconds--;
-            updateHourglassUI();
+            timeInSeconds++;
+        } else {
+            timeInSeconds--;
+        }
 
-            if (currentRemainingSeconds <= 0) {
-                clearInterval(hourglassTimer);
-                window.removeEventListener('deviceorientation', handleOrientation);
-                document.getElementById('screen-task5-success').style.display = 'block';
-            }
+        updateTimerDisplay();
+
+        if (timeInSeconds >= TARGET_TIME) {
+            clearInterval(timerInterval);
+            document.getElementById('task5-success').style.display = 'block';
+            document.getElementById('task5-hint').style.display = 'none';
+        } else if (timeInSeconds <= 0) {
+            timeInSeconds = 0;
+            updateTimerDisplay();
+            clearInterval(timerInterval);
+            document.getElementById('task5-gameover').style.display = 'block';
         }
     }, 1000);
 }
 
-function handleOrientation(event) {
-    const beta = event.beta;
-    if (beta === null) return;
-
-    // Enheten regnes som opp-ned hvis beta er lavere enn -60 grader
-    if (beta < -60) {
-        isUpsideDown = true;
-        document.getElementById('hourglass-hint').innerText = "Bra! Sanden renner bakover...";
-        document.getElementById('hourglass-hint').style.color = "#4ade80";
-    } else {
-        isUpsideDown = false;
-        document.getElementById('hourglass-hint').innerText = "Snu mobilen helt opp-ned for å tømme glasset!";
-        document.getElementById('hourglass-hint').style.color = "#ffd700";
-    }
-}
-
-function updateHourglassUI() {
-    const timeDisplay = document.getElementById('hourglass-time');
-    if (timeDisplay) {
-        timeDisplay.innerText = `${currentRemainingSeconds}s`;
-    }
+function resetTask5() {
+    timeInSeconds = 45;
+    document.getElementById('task5-gameover').style.display = 'none';
+    startTimerLoop();
 }
 
 
 // ==========================================
-// OPPGAVE 6: FLAPPY BIRD
+// OPPGAVE 6: FLAPPY SANTA SPILL-LOGIKK
 // ==========================================
+let canvas, ctx;
+let santaY, santaVelocity, santaGravity, santaJump;
+let pipes = [];
 let flappyScore = 0;
-const FLAPPY_GOAL = 10;
+let isFlappyRunning = false;
+let flappyAnimationId;
+let pipeTimer = 0;
 
-function jumpBird() {
-    // Enkel klikk-mekanikk for demonstrasjon / mobiltest
-    flappyScore++;
-    const scoreDisplay = document.getElementById('flappy-score');
-    if (scoreDisplay) scoreDisplay.innerText = flappyScore;
+function initFlappyCanvas() {
+    canvas = document.getElementById('flappy-canvas');
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
 
-    if (flappyScore >= FLAPPY_GOAL) {
-        document.getElementById('flappy-success').style.display = 'block';
+    canvas.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        flapSanta();
+    });
+
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && isFlappyRunning) {
+            e.preventDefault();
+            flapSanta();
+        }
+    });
+}
+
+function flapSanta() {
+    if (isFlappyRunning) {
+        santaVelocity = santaJump;
     }
+}
+
+function startFlappyGame() {
+    if (!canvas) initFlappyCanvas();
+
+    document.getElementById('flappy-overlay').style.display = 'none';
+    document.getElementById('task6-success').style.display = 'none';
+
+    santaY = 180;
+    santaVelocity = 0;
+    santaGravity = 0.28;
+    santaJump = -5.5;
+    pipes = [];
+    flappyScore = 0;
+    pipeTimer = 0;
+    isFlappyRunning = true;
+
+    cancelAnimationFrame(flappyAnimationId);
+    flappyGameLoop();
+}
+
+function flappyGameLoop() {
+    if (!isFlappyRunning) return;
+
+    santaVelocity += santaGravity;
+    santaY += santaVelocity;
+
+    pipeTimer++;
+    if (pipeTimer % 95 === 0) {
+        const gap = 115;
+        const minHeight = 40;
+        const topHeight = Math.floor(Math.random() * (canvas.height - gap - minHeight * 2)) + minHeight;
+        pipes.push({
+            x: canvas.width,
+            top: topHeight,
+            bottom: topHeight + gap,
+            passed: false
+        });
+    }
+
+    for (let i = 0; i < pipes.length; i++) {
+        let p = pipes[i];
+        p.x -= 1.8;
+
+        if (!p.passed && p.x + 35 < 50) {
+            p.passed = true;
+            flappyScore++;
+
+            if (flappyScore >= 20) {
+                winFlappyGame();
+                return;
+            }
+        }
+
+        const santaX = 50;
+        const santaRadius = 12;
+
+        if (santaX + santaRadius > p.x && santaX - santaRadius < p.x + 40) {
+            if (santaY - santaRadius < p.top || santaY + santaRadius > p.bottom) {
+                gameOverFlappy();
+                return;
+            }
+        }
+    }
+
+    pipes = pipes.filter(p => p.x > -50);
+
+    if (santaY > canvas.height - 15 || santaY < 10) {
+        gameOverFlappy();
+        return;
+    }
+
+    drawFlappyScene();
+    flappyAnimationId = requestAnimationFrame(flappyGameLoop);
+}
+
+function drawFlappyScene() {
+    ctx.fillStyle = '#071326';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let p of pipes) {
+        ctx.fillStyle = '#8b1e2a';
+        ctx.fillRect(p.x, 0, 40, p.top);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(p.x - 2, p.top - 6, 44, 6);
+
+        ctx.fillStyle = '#8b1e2a';
+        ctx.fillRect(p.x, p.bottom, 40, canvas.height - p.bottom);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(p.x - 2, p.bottom, 44, 6);
+    }
+
+    ctx.font = '28px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎅', 50, santaY);
+
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Poeng: ${flappyScore} / 20`, 15, 28);
+}
+
+function gameOverFlappy() {
+    isFlappyRunning = false;
+    document.getElementById('flappy-msg').innerHTML = `Du krasjet på ${flappyScore} poeng!<br>Prøv igjen!`;
+    document.getElementById('flappy-overlay').style.display = 'flex';
+}
+
+function winFlappyGame() {
+    isFlappyRunning = false;
+    drawFlappyScene();
+    document.getElementById('task6-success').style.display = 'block';
 }
 
 
@@ -334,14 +543,16 @@ const HASH_TASK7 = '0cba2fa7ffebce9bb31e312ee655e6c071e3e83dadeca2d5a75a67a0a9aa
 async function validateTask7() {
     const inputEl = document.getElementById('task7-input');
     const errorEl = document.getElementById('task7-error');
+    if (!inputEl) return;
+
     const val = inputEl.value.replace(/\s+/g, '');
     const hash = await sha256(val);
 
     if (hash === HASH_TASK7) {
-        errorEl.style.display = 'none';
+        if (errorEl) errorEl.style.display = 'none';
         advanceFrom('screen-task7');
     } else {
-        errorEl.style.display = 'block';
+        if (errorEl) errorEl.style.display = 'block';
     }
 }
 
@@ -368,8 +579,6 @@ function initWaldoTask() {
         const rect = img.getBoundingClientRect();
         const clickX = ((event.clientX - rect.left) / rect.width) * 100;
         const clickY = ((event.clientY - rect.top) / rect.height) * 100;
-
-        console.log(`Klikket på: x: ${clickX.toFixed(1)}%, y: ${clickY.toFixed(1)}%`);
 
         waldoTargets.forEach((target, index) => {
             if (!target.found) {
@@ -423,5 +632,6 @@ function markTargetFound(target, index, wrapper) {
 window.addEventListener('DOMContentLoaded', () => {
     initFlagTaskA();
     initFlagTaskB();
+    initFlappyCanvas();
     initWaldoTask();
 });

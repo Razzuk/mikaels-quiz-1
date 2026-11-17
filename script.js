@@ -116,16 +116,23 @@ async function validateTask3a() {
     }
 }
 
-async function validateTask4a() {
-    const val = document.getElementById('task4a-input').value.trim().toLowerCase();
-    const hash = await sha256(val);
-    if (hash === HASH_A4) {
-        document.getElementById('task4a-error').style.display = 'none';
-        advanceFrom('screen-task4a');
-    } else {
-        document.getElementById('task4a-error').style.display = 'block';
-    }
-}
+// ==========================================
+// OPPGAVE 4A & 4B: FLAGG-SORTERING
+// ==========================================
+
+// SPOR A: Flaggdata og fasit (Argentina -> Hellas)
+const flagsDataA = [
+    { id: 'AR', name: 'Argentina', flag: '🇦🇷' },
+    { id: 'BE', name: 'Belgia',    flag: '🇧🇪' },
+    { id: 'CL', name: 'Chile',     flag: '🇨🇱' },
+    { id: 'DK', name: 'Danmark',   flag: '🇩🇰' },
+    { id: 'EG', name: 'Egypt',     flag: '🇪🇬' },
+    { id: 'FI', name: 'Finland',   flag: '🇫🇮' },
+    { id: 'GH', name: 'Ghana',     flag: '🇬🇭' },
+    { id: 'GR', name: 'Hellas',    flag: '🇬🇷' }
+];
+const CORRECT_ORDER_4A = ['AR', 'BE', 'CL', 'DK', 'EG', 'FI', 'GH', 'GR'];
+let currentFlagsA = [];
 
 async function validateTask2b() {
     const val = document.getElementById('task2b-input').value.trim().toLowerCase();
@@ -149,17 +156,130 @@ async function validateTask3b() {
     }
 }
 
-async function validateTask4b() {
-    const val = document.getElementById('task4b-input').value.trim().toLowerCase();
-    const hash = await sha256(val);
-    if (hash === HASH_B4) {
-        document.getElementById('task4b-error').style.display = 'none';
-        advanceFrom('screen-task4b');
+// SPOR B: Flaggdata og fasit (Island -> Spania)
+const flagsDataB = [
+    { id: 'IS', name: 'Island',  flag: '🇮🇸' },
+    { id: 'JP', name: 'Japan',   flag: '🇯🇵' },
+    { id: 'KE', name: 'Kenya',   flag: '🇰🇪' },
+    { id: 'LB', name: 'Libanon', flag: '🇱🇧' },
+    { id: 'MX', name: 'Mexico',  flag: '🇲🇽' },
+    { id: 'NO', name: 'Norge',   flag: '🇳🇴' },
+    { id: 'PL', name: 'Polen',   flag: '🇵🇱' },
+    { id: 'ES', name: 'Spania',  flag: '🇪🇸' }
+];
+const CORRECT_ORDER_4B = ['IS', 'JP', 'KE', 'LB', 'MX', 'NO', 'PL', 'ES'];
+let currentFlagsB = [];
+
+// Felles funksjon for å tegne en flaggliste
+function renderFlagListUI(containerId, flagList, track) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    flagList.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.alignItems = 'center';
+        row.style.justifyContent = 'space-between';
+        row.style.background = 'rgba(255, 255, 255, 0.1)';
+        row.style.border = '1px solid #ffd700';
+        row.style.borderRadius = '6px';
+        row.style.padding = '6px 12px';
+
+        const label = document.createElement('div');
+        label.style.fontSize = '24px';
+        label.style.display = 'flex';
+        label.style.alignItems = 'center';
+        label.style.gap = '10px';
+        label.innerHTML = `<span style="font-size: 16px; color: #ffd700; width: 20px;">${index + 1}.</span> <span>${item.flag}</span>`;
+
+        const btnGroup = document.createElement('div');
+        btnGroup.style.display = 'flex';
+        btnGroup.style.gap = '5px';
+
+        const upBtn = document.createElement('button');
+        upBtn.innerText = '⬆️';
+        upBtn.style.padding = '4px 8px';
+        upBtn.style.fontSize = '14px';
+        upBtn.disabled = (index === 0);
+        upBtn.onclick = () => moveFlagItem(track, index, -1);
+
+        const downBtn = document.createElement('button');
+        downBtn.innerText = '⬇️';
+        downBtn.style.padding = '4px 8px';
+        downBtn.style.fontSize = '14px';
+        downBtn.disabled = (index === flagList.length - 1);
+        downBtn.onclick = () => moveFlagItem(track, index, 1);
+
+        btnGroup.appendChild(upBtn);
+        btnGroup.appendChild(downBtn);
+
+        row.appendChild(label);
+        row.appendChild(btnGroup);
+        container.appendChild(row);
+    });
+}
+
+// Flytte et flagg opp eller ned
+function moveFlagItem(track, index, direction) {
+    const list = (track === '4a') ? currentFlagsA : currentFlagsB;
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= list.length) return;
+
+    const temp = list[index];
+    list[index] = list[targetIndex];
+    list[targetIndex] = temp;
+
+    if (track === '4a') {
+        renderFlagListUI('flag-list-4a', currentFlagsA, '4a');
     } else {
-        document.getElementById('task4b-error').style.display = 'block';
+        renderFlagListUI('flag-list-4b', currentFlagsB, '4b');
     }
 }
 
+// Validering for Oppgave 4A
+function validateTask4a() {
+    const userOrder = currentFlagsA.map(item => item.id);
+    const isCorrect = userOrder.every((id, idx) => id === CORRECT_ORDER_4A[idx]);
+
+    const errorEl = document.getElementById('task4a-error');
+    const successEl = document.getElementById('task4a-success');
+
+    if (isCorrect) {
+        if (errorEl) errorEl.style.display = 'none';
+        if (successEl) successEl.style.display = 'block';
+    } else {
+        if (errorEl) errorEl.style.display = 'block';
+    }
+}
+
+// Validering for Oppgave 4B
+function validateTask4b() {
+    const userOrder = currentFlagsB.map(item => item.id);
+    const isCorrect = userOrder.every((id, idx) => id === CORRECT_ORDER_4B[idx]);
+
+    const errorEl = document.getElementById('task4b-error');
+    const successEl = document.getElementById('task4b-success');
+
+    if (isCorrect) {
+        if (errorEl) errorEl.style.display = 'none';
+        if (successEl) successEl.style.display = 'block';
+    } else {
+        if (errorEl) errorEl.style.display = 'block';
+    }
+}
+
+// Initialiser og stokk flaggene tilfeldig ved oppstart
+function initAllFlagTasks() {
+    currentFlagsA = [...flagsDataA].sort(() => Math.random() - 0.5);
+    renderFlagListUI('flag-list-4a', currentFlagsA, '4a');
+
+    currentFlagsB = [...flagsDataB].sort(() => Math.random() - 0.5);
+    renderFlagListUI('flag-list-4b', currentFlagsB, '4b');
+}
+
+window.addEventListener('DOMContentLoaded', initAllFlagTasks);
 // ==========================================
 // OPPGAVE 5: TIMEGLASS (BEVEGELSESSENSOR)
 // ==========================================

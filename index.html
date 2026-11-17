@@ -58,13 +58,32 @@
     <!-- SPOR A (OSLO-VEIEN)                        -->
     <!-- ========================================== -->
 
-    <!-- OPPGAVE 2A -->
+    <!-- ========================================== -->
+    <!-- OPPGAVE 2A: TALLJAKTEN I ØYGARDEN          -->
+    <!-- ========================================== -->
     <div id="screen-task2a" class="screen">
-        <h2>Oppgave 2A (Spor A - Oslo)</h2>
-        <p>Testoppgave: Skriv inn testkoden <strong>a2</strong> for å gå videre.</p>
-        <input type="text" id="task2a-input" placeholder="Skriv a2">
-        <button onclick="validateTask2a()">Sjekk svar</button>
-        <p id="task2a-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "a2".</p>
+        <h2>Oppgave 2A: Talljakten</h2>
+        <p>For å kunne løse denne oppgaven må du søke for å finne 4 ulike tall. Disse tallene skal <strong>multipliseres</strong> for å finne løsningstallet:</p>
+        
+        <ol style="text-align: left; max-width: 480px; margin: 15px auto; line-height: 1.6;">
+            <li>Fødselsåret til varaordføreren i Fjell kommune i 2016</li>
+            <li>Det største tallet du kan lage med sifferene i året Brattholmen skole ble innvidd</li>
+            <li>Antall skoler i Øygarden Kommune</li>
+            <li>Antall skolekrinser i Øygarden Kommune</li>
+        </ol>
+
+        <p style="font-size: 14px; color: #ffd700;">Skriv inn produktet av de 4 tallene:</p>
+
+        <input type="text" id="task2a-input" placeholder="Tast inn løsningstallet..." style="font-size: 18px; padding: 10px; width: 80%; max-width: 320px; text-align: center;">
+        <br><br>
+        <button onclick="validateTask2a()">Lås opp</button>
+
+        <p id="task2a-error" style="color: #ff6b6b; display: none; margin-top: 10px;">Feil tall! Sjekk utregningen eller årstallene og prøv igjen.</p>
+        
+        <div id="task2a-success" style="display: none; margin-top: 15px;">
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Helt riktig regnet ut!</p>
+            <button onclick="advanceFrom('screen-task2a')">Gå til Oppgave 3A</button>
+        </div>
     </div>
 
     <!-- OPPGAVE 3A -->

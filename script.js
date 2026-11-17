@@ -588,17 +588,35 @@ async function validateTask7() {
 
 
 // ==========================================
-// OPPGAVE 8: FINN 5 JULEOBJEKTER (WALDO)
+// OPPGAVE 8: WALDO (ZOOM OG KLIKK-SPORING)
 // ==========================================
+
+// Sett inn dine 5 objekter her. Foreløpige test-koordinater:
 const waldoTargets = [
-    { name: "Nisselue",   x: 24.5, y: 35.0, radius: 3.5, found: false },
-    { name: "Pepperkake", x: 62.0, y: 18.5, radius: 3.5, found: false },
-    { name: "Pakke",      x: 81.2, y: 74.0, radius: 3.5, found: false },
-    { name: "Bjelle",     x: 12.8, y: 82.3, radius: 3.5, found: false },
-    { name: "Candy cane", x: 45.0, y: 56.7, radius: 3.5, found: false }
+    { name: "Nisselue",   x: 25.0, y: 30.0, radius: 4.0, found: false },
+    { name: "Pepperkake", x: 60.0, y: 20.0, radius: 4.0, found: false },
+    { name: "Pakke",      x: 80.0, y: 75.0, radius: 4.0, found: false },
+    { name: "Bjelle",     x: 15.0, y: 80.0, radius: 4.0, found: false },
+    { name: "Candy cane", x: 45.0, y: 55.0, radius: 4.0, found: false }
 ];
 
 let waldoFoundCount = 0;
+let currentZoomPercent = 100;
+
+function zoomWaldo(factor) {
+    const wrapper = document.getElementById('waldo-wrapper');
+    if (!wrapper) return;
+
+    currentZoomPercent = Math.min(Math.max(currentZoomPercent * factor, 100), 400); // 100% til 400% zoom
+    wrapper.style.width = `${currentZoomPercent}%`;
+}
+
+function resetWaldoZoom() {
+    const wrapper = document.getElementById('waldo-wrapper');
+    if (!wrapper) return;
+    currentZoomPercent = 100;
+    wrapper.style.width = '100%';
+}
 
 function initWaldoTask() {
     const img = document.getElementById('waldo-img');
@@ -607,8 +625,12 @@ function initWaldoTask() {
 
     img.addEventListener('click', (event) => {
         const rect = img.getBoundingClientRect();
+        // Regner ut klikk i prosent (0 til 100) av selve bildet
         const clickX = ((event.clientX - rect.left) / rect.width) * 100;
         const clickY = ((event.clientY - rect.top) / rect.height) * 100;
+
+        // Viser nøyaktige koordinater i konsollen (F12) for oppsett
+        console.log(`Waldo klikk -> x: ${clickX.toFixed(1)}%, y: ${clickY.toFixed(1)}%`);
 
         waldoTargets.forEach((target, index) => {
             if (!target.found) {
@@ -624,20 +646,22 @@ function initWaldoTask() {
 }
 
 function markTargetFound(target, index, wrapper) {
+    // Plasserer en rød/gull sirkel på funnstedet
     const marker = document.createElement('div');
     marker.style.position = 'absolute';
     marker.style.left = `${target.x}%`;
     marker.style.top = `${target.y}%`;
-    marker.style.width = '36px';
-    marker.style.height = '36px';
+    marker.style.width = '32px';
+    marker.style.height = '32px';
     marker.style.border = '3px solid #ffd700';
-    marker.style.backgroundColor = 'rgba(196, 30, 58, 0.4)';
+    marker.style.backgroundColor = 'rgba(196, 30, 58, 0.45)';
     marker.style.borderRadius = '50%';
     marker.style.transform = 'translate(-50%, -50%)';
     marker.style.pointerEvents = 'none';
-    marker.style.boxShadow = '0 0 8px #ffd700';
+    marker.style.boxShadow = '0 0 10px #ffd700';
     wrapper.appendChild(marker);
 
+    // Oppdater sjekklisten
     const itemEl = document.getElementById(`item-${index}`);
     if (itemEl) {
         itemEl.innerHTML = `🟢 ${index + 1}. <del>${target.name}</del>`;
@@ -654,7 +678,6 @@ function markTargetFound(target, index, wrapper) {
         if (successEl) successEl.style.display = 'block';
     }
 }
-
 
 // ==========================================
 // OPPSTART VED SIDELASTING

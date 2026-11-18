@@ -379,6 +379,45 @@
         </div>
     </div>
 
+        <!-- ========================================== -->
+    <!-- FINALEN: SEIERS- OG KONFETTISKRJEM         -->
+    <!-- ========================================== -->
+    <div id="screen-task10" class="screen" style="position: relative; overflow: hidden; padding: 25px 15px; text-align: center;">
+        <!-- Canvas for konfetti som dekker hele skjermen -->
+        <canvas id="confetti-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;"></canvas>
+
+        <div style="position: relative; z-index: 20;">
+            <h1 style="color: #ffd700; font-size: 34px; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); animation: pulseText 1.5s infinite alternate;">
+                🏆 GRATULERER! 🏆
+            </h1>
+            
+            <p style="font-size: 20px; color: #fff; margin-bottom: 25px;">
+                Dere har løst alle gåtene og fullført julespillet!
+            </p>
+
+            <!-- Den dramatiske vinner-instruksen -->
+            <div style="background: rgba(196, 30, 58, 0.85); border: 3px solid #ffd700; border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 440px; box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);">
+                <p style="font-size: 16px; color: #ffd700; margin: 0; text-transform: uppercase; letter-spacing: 1px;">
+                    ⚡ FOR Å VINNE MÅ DERE NÅ: ⚡
+                </p>
+                <p style="font-size: 18px; color: #fff; margin: 10px 0 5px 0;">
+                    Reis dere opp og rop i kor:
+                </p>
+                <h2 style="font-size: 38px; color: #fff; margin: 10px 0; letter-spacing: 2px; text-shadow: 2px 2px 0px #000, 0 0 10px #ffd700;">
+                    «JULEBUKK!»
+                </h2>
+                <p style="font-size: 14px; color: #ffd700; margin: 0;">
+                    Første lag som roper, vinner premien! 🎁
+                </p>
+            </div>
+
+            <!-- Knapp for å spille fanfaren på nytt dersom volumet var av -->
+            <button type="button" onclick="playVictoryFanfare()" style="margin-top: 20px; padding: 10px 20px; font-size: 15px; background: rgba(255, 255, 255, 0.15); border: 1px solid #ffd700; color: #ffd700;">
+                🎺 Spill seiersfanfare igjen
+            </button>
+        </div>
+    </div>
+
     <!-- ========================================== -->
     <!-- KOBLING TIL JAVASCRIPT-FILEN               -->
     <!-- ========================================== -->

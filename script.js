@@ -601,7 +601,7 @@ function drawFlappyScene() {
     ctx.fillStyle = '#ffd700';
     ctx.font = 'bold 16px sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(`Poeng: ${flappyScore} / 20`, 15, 28);
+    ctx.fillText(`Poeng: ${flappyScore} / 15`, 15, 28);
 }
 
 function gameOverFlappy() {

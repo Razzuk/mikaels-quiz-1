@@ -60,7 +60,8 @@ const gameFlow = {
     'screen-task5': 'screen-task6',
     'screen-task6': 'screen-task7',
     'screen-task7': 'screen-task8',
-    'screen-task8': 'screen-task9'
+    'screen-task8': 'screen-task9',
+    'screen-task9': 'screen-task10'
 };
 
 function advanceFrom(currentScreenId) {

@@ -103,8 +103,59 @@ async function validateTask1() {
 // TESTKODER FOR PLACEHOLDERE (SPOR A & B)
 // ==========================================
 
-const HASH_A3 = 'f46dd28a5499d8efef0b8fb8ee1ec1c5a5e407c9381741d576ba8deb4f59ec3f'; // "a3"
-const HASH_B3 = '76a8277347f52530e1cf979175a178980b3a180d176165c985d85f7e142f1eed'; // "b3"
+// ==========================================
+// OPPGAVE 3A OG 3B: VALIDERINGS-LOGIKK
+// ==========================================
+
+// SHA-256 for koden "5937"
+const HASH_A3 = '0718b5188109465df3fba5039b8eef456a9bda69e1cba53dba299adddf6ef2f6';
+
+async function validateTask3a() {
+    const inputEl = document.getElementById('task3a-input');
+    const errorEl = document.getElementById('task3a-error');
+    if (!inputEl) return;
+
+    // Fjerner mellomrom hvis deltakerne taster inn f.eks. "59 37"
+    const val = inputEl.value.trim().replace(/\s+/g, '');
+    const hash = await sha256(val);
+
+    if (hash === HASH_A3) {
+        if (errorEl) errorEl.style.display = 'none';
+        const successEl = document.getElementById('task3a-success');
+        if (successEl) {
+            successEl.style.display = 'block';
+        } else {
+            advanceFrom('screen-task3a');
+        }
+    } else {
+        if (errorEl) errorEl.style.display = 'block';
+    }
+}
+
+// SHA-256 for koden "6721"
+const HASH_B3 = 'ce0f260d26064118bd9e5d32796ec10ceb95e36e9f12a7f4b0a5cc262304a3d5';
+
+async function validateTask3b() {
+    const inputEl = document.getElementById('task3b-input');
+    const errorEl = document.getElementById('task3b-error');
+    if (!inputEl) return;
+
+    // Fjerner mellomrom hvis deltakerne taster inn f.eks. "67 21"
+    const val = inputEl.value.trim().replace(/\s+/g, '');
+    const hash = await sha256(val);
+
+    if (hash === HASH_B3) {
+        if (errorEl) errorEl.style.display = 'none';
+        const successEl = document.getElementById('task3b-success');
+        if (successEl) {
+            successEl.style.display = 'block';
+        } else {
+            advanceFrom('screen-task3b');
+        }
+    } else {
+        if (errorEl) errorEl.style.display = 'block';
+    }
+}
 
 // Hashen for tallet 6770130840 (1969 * 9551 * 24 * 15)
 const HASH_A2 = 'a0f55f635a6f4c4fa6fd9a05f0b2be06f817a0e0bb83fc3cdd795f546f94657d';
@@ -705,6 +756,117 @@ async function validateTask9() {
     } else {
         if (errorEl) errorEl.style.display = 'block';
     }
+}
+
+// ==========================================
+// FINALE: LYDER OG KONFETTI
+// ==========================================
+
+function startVictoryScreen() {
+    playVictoryFanfare();
+    startConfetti();
+}
+
+// 1. Innebygd seiersfanfare (Web Audio API) - krever ingen eksterne filer!
+function playVictoryFanfare() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+
+        // Melodi for fanfare: [frekvens (Hz), varighet (sekunder)]
+        const notes = [
+            { f: 523.25, d: 0.15 }, // C5
+            { f: 523.25, d: 0.15 }, // C5
+            { f: 523.25, d: 0.15 }, // C5
+            { f: 659.25, d: 0.45 }, // E5
+            { f: 587.33, d: 0.20 }, // D5
+            { f: 659.25, d: 0.20 }, // E5
+            { f: 783.99, d: 0.80 }  // G5 (Høytidelig seierstone)
+        ];
+
+        let startTime = ctx.currentTime + 0.05;
+
+        notes.forEach(note => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'triangle'; // Myk og fyldig messingtone
+            osc.frequency.setValueAtTime(note.f, startTime);
+
+            // Volum-kurve
+            gain.gain.setValueAtTime(0.01, startTime);
+            gain.gain.linearRampToValueAtTime(0.3, startTime + 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + note.d);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + note.d);
+
+            startTime += note.d + 0.04;
+        });
+    } catch (e) {
+        console.log("Audio kunne ikke spilles automatisk:", e);
+    }
+}
+
+// 2. Fargerik konfetti-animasjon på canvas
+let confettiRunning = false;
+function startConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = canvas.parentElement.clientWidth || window.innerWidth;
+    canvas.height = canvas.parentElement.clientHeight || window.innerHeight;
+
+    const pieces = [];
+    const colors = ['#ffd700', '#c41e3a', '#4ade80', '#ffffff', '#38bdf8', '#f43f5e'];
+
+    for (let i = 0; i < 120; i++) {
+        pieces.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            size: Math.random() * 8 + 5,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedY: Math.random() * 3 + 2,
+            speedX: Math.random() * 2 - 1,
+            rotation: Math.random() * 360,
+            rotSpeed: Math.random() * 6 - 3
+        });
+    }
+
+    if (confettiRunning) return;
+    confettiRunning = true;
+
+    function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        pieces.forEach(p => {
+            p.y += p.speedY;
+            p.x += p.speedX;
+            p.rotation += p.rotSpeed;
+
+            // Start på toppen igjen når de faller ut
+            if (p.y > canvas.height) {
+                p.y = -15;
+                p.x = Math.random() * canvas.width;
+            }
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+            ctx.restore();
+        });
+
+        requestAnimationFrame(render);
+    }
+
+    render();
 }
 
 // ==========================================

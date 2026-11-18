@@ -114,13 +114,36 @@
         </div>
     </div>
 
-    <!-- OPPGAVE 3A -->
+    <!-- ========================================== -->
+    <!-- OPPGAVE 3A: EKSTERN GÅTE (LØSNING: 5937)   -->
+    <!-- ========================================== -->
     <div id="screen-task3a" class="screen">
-        <h2>Oppgave 3A (Spor A - Oslo)</h2>
-        <p>Testoppgave: Skriv inn testkoden <strong>a3</strong> for å gå videre.</p>
-        <input type="text" id="task3a-input" placeholder="Skriv a3">
-        <button onclick="validateTask3a()">Sjekk svar</button>
-        <p id="task3a-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "a3".</p>
+        <h2>Oppgave 3A</h2>
+        <p>Trykk på knappen under for å åpne neste gåte i en ny fane. Finn den firesifrede koden og tast den inn her!</p>
+
+        <!-- LINK-KNAPP FOR 3A -->
+        <div style="margin: 25px 0;">
+            <a href="https://rodtraad.no/oppgave/ECHjX2HB" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               style="display: inline-block; padding: 14px 24px; font-size: 17px; font-weight: bold; color: #111; background: #ffd700; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);">
+                🔗 Åpne Oppgave 3A
+            </a>
+            <p style="font-size: 12px; color: #aaa; margin-top: 8px;">(Åpnes i en ny fane slik at du beholder spillet her)</p>
+        </div>
+
+        <!-- Svarfelt -->
+        <div style="margin-top: 20px;">
+            <input type="text" id="task3a-input" placeholder="Tast inn 4-sifret kode..." style="font-size: 18px; padding: 10px; width: 80%; max-width: 280px; text-align: center;">
+            <br><br>
+            <button onclick="validateTask3a()">Lås opp</button>
+            <p id="task3a-error" style="color: #ff6b6b; display: none; margin-top: 10px;">Feil kode! Sjekk gåten og prøv igjen.</p>
+        </div>
+
+        <div id="task3a-success" style="display: none; margin-top: 15px;">
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Riktig kode!</p>
+            <button onclick="advanceFrom('screen-task3a')">Gå til Oppgave 4A</button>
+        </div>
     </div>
 
     <!-- ========================================== -->
@@ -157,13 +180,36 @@
         <p id="task2b-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "b2".</p>
     </div>
 
-    <!-- OPPGAVE 3B -->
+    <!-- ========================================== -->
+    <!-- OPPGAVE 3B: EKSTERN GÅTE (LØSNING: 6721)   -->
+    <!-- ========================================== -->
     <div id="screen-task3b" class="screen">
-        <h2>Oppgave 3B (Spor B - Solo)</h2>
-        <p>Testoppgave: Skriv inn testkoden <strong>b3</strong> for å gå videre.</p>
-        <input type="text" id="task3b-input" placeholder="Skriv b3">
-        <button onclick="validateTask3b()">Sjekk svar</button>
-        <p id="task3b-error" style="color: #ff6b6b; display: none;">Feil kode! Prøv "b3".</p>
+        <h2>Oppgave 3B</h2>
+        <p>Trykk på knappen under for å åpne neste gåte i en ny fane. Finn den firesifrede koden og tast den inn her!</p>
+
+        <!-- LINK-KNAPP FOR 3B -->
+        <div style="margin: 25px 0;">
+            <a href="https://rodtraad.no/oppgave/Xe2WFuvc" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               style="display: inline-block; padding: 14px 24px; font-size: 17px; font-weight: bold; color: #111; background: #ffd700; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);">
+                🔗 Åpne Oppgave 3B
+            </a>
+            <p style="font-size: 12px; color: #aaa; margin-top: 8px;">(Åpnes i en ny fane slik at du beholder spillet her)</p>
+        </div>
+
+        <!-- Svarfelt -->
+        <div style="margin-top: 20px;">
+            <input type="text" id="task3b-input" placeholder="Tast inn 4-sifret kode..." style="font-size: 18px; padding: 10px; width: 80%; max-width: 280px; text-align: center;">
+            <br><br>
+            <button onclick="validateTask3b()">Lås opp</button>
+            <p id="task3b-error" style="color: #ff6b6b; display: none; margin-top: 10px;">Feil kode! Sjekk gåten og prøv igjen.</p>
+        </div>
+
+        <div id="task3b-success" style="display: none; margin-top: 15px;">
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Riktig kode!</p>
+            <button onclick="advanceFrom('screen-task3b')">Gå til Oppgave 4B</button>
+        </div>
     </div>
 
     <!-- ========================================== -->

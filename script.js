@@ -618,26 +618,92 @@ function winFlappyGame() {
 
 
 // ==========================================
-// OPPGAVE 7: PUSLESPILLET (KODE: 14916)
+// OPPGAVE 7: INKY (FASIT: 12441 + 18 MIN TIMER)
 // ==========================================
-const HASH_TASK7 = '0cba2fa7ffebce9bb31e312ee655e6c071e3e83dadeca2d5a75a67a0a9aa9421';
+
+// SHA-256 for koden "12441"
+const HASH_TASK7 = 'a71a838b343853593777e381bc8753295d28a95eb25ed13dd5a1d0409cd36508';
+
+let task7TimerInterval = null;
+const TASK7_DURATION_SECONDS = 18 * 60; // 18 minutter = 1080 sekunder
+
+function startTask7Timer() {
+    stopTask7Timer(); // Nullstill eventuell kjørende timer
+
+    // Finn eller sett slutt-tidspunkt i localStorage slik at den tåler refresh
+    let endTime = localStorage.getItem('task7_end_timestamp');
+    if (!endTime) {
+        endTime = Date.now() + (TASK7_DURATION_SECONDS * 1000);
+        localStorage.setItem('task7_end_timestamp', endTime);
+    } else {
+        endTime = parseInt(endTime, 10);
+    }
+
+    function updateDisplay() {
+        const now = Date.now();
+        const remainingMs = endTime - now;
+        const totalSeconds = Math.max(0, Math.floor(remainingMs / 1000));
+
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+        const displayEl = document.getElementById('task7-timer-display');
+        if (displayEl) {
+            displayEl.innerText = formatted;
+        }
+
+        // Hvis tiden er ute:
+        if (totalSeconds <= 0) {
+            stopTask7Timer();
+            localStorage.removeItem('task7_end_timestamp');
+
+            const timeoutMsg = document.getElementById('task7-timeout-msg');
+            if (timeoutMsg) timeoutMsg.style.display = 'block';
+
+            // Send laget automatisk videre etter et kort øyeblikk
+            setTimeout(() => {
+                advanceFrom('screen-task7');
+            }, 2500);
+        }
+    }
+
+    updateDisplay();
+    task7TimerInterval = setInterval(updateDisplay, 1000);
+}
+
+function stopTask7Timer() {
+    if (task7TimerInterval) {
+        clearInterval(task7TimerInterval);
+        task7TimerInterval = null;
+    }
+}
 
 async function validateTask7() {
     const inputEl = document.getElementById('task7-input');
     const errorEl = document.getElementById('task7-error');
     if (!inputEl) return;
 
-    const val = inputEl.value.replace(/\s+/g, '');
+    const val = inputEl.value.trim().replace(/\s+/g, '');
     const hash = await sha256(val);
 
     if (hash === HASH_TASK7) {
         if (errorEl) errorEl.style.display = 'none';
-        advanceFrom('screen-task7');
+        
+        // Stopp klokken og rydd opp i lagringen
+        stopTask7Timer();
+        localStorage.removeItem('task7_end_timestamp');
+
+        const successEl = document.getElementById('task7-success');
+        if (successEl) {
+            successEl.style.display = 'block';
+        } else {
+            advanceFrom('screen-task7');
+        }
     } else {
         if (errorEl) errorEl.style.display = 'block';
     }
 }
-
 
 // ==========================================
 // OPPGAVE 8: WALDO (ZOOM OG KLIKK-SPORING)

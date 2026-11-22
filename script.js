@@ -520,8 +520,8 @@ function startFlappyGame() {
 
     santaY = 180;
     santaVelocity = 0;
-    santaGravity = 0.16;
-    santaJump = -4.5;
+    santaGravity = 0.14;
+    santaJump = -3.5;
     pipes = [];
     flappyScore = 0;
     pipeTimer = 0;

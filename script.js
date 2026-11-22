@@ -17,7 +17,8 @@ function goToScreen(screenId) {
             initFlagTaskA();
         } else if (screenId === 'screen-task4b') {
             initFlagTaskB();
-        }
+        } else if (screenId === 'screen-task7') {
+            startTask7Timer(); // Starter 18-minuttersklokken på Inky
     } else {
         console.error("Fant ikke skjerm med ID:", screenId);
     }

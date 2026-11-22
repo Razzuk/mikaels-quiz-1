@@ -12,13 +12,21 @@ function goToScreen(screenId) {
     if (target) {
         target.classList.add('active');
 
-        // Initialiser flaggene hvis man ankommer oppgave 4A eller 4B
+        // 1. Husk skjermen ved utilsiktet refresh:
+        localStorage.setItem('escape_current_screen', screenId);
+
+        // 2. Initialiser oppgavene som trenger det ved ankomst:
         if (screenId === 'screen-task4a') {
             initFlagTaskA();
         } else if (screenId === 'screen-task4b') {
             initFlagTaskB();
         } else if (screenId === 'screen-task7') {
             startTask7Timer(); // Starter 18-minuttersklokken på Inky
+        } else if (screenId === 'screen-task8') {
+            initWaldoTask();   // Aktiverer klikk/sirkler på Waldo-bildet
+        } else if (screenId === 'screen-task10') {
+            startConfetti();   // Starter konfettien på vinnerskjermen
+        }
     } else {
         console.error("Fant ikke skjerm med ID:", screenId);
     }

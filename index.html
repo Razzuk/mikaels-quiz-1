@@ -264,16 +264,45 @@
     </div>
 
 <!-- ========================================== -->
-    <!-- OPPGAVE 7: DET FYSISKE PUSLESPILLET        -->
+    <!-- OPPGAVE 7: INKY (FYSISK ARK + 18 MIN TIMER)-->
     <!-- ========================================== -->
     <div id="screen-task7" class="screen">
-        <h2>Oppgave 7: Den hemmelige posen</h2>
-        <p>Gå bort til Mikael  og be om å få <strong>puslespillposen</strong>.</p>
-        <p>Når puslespillet er ferdig får du koden til neste oppgave.</p>
-        
-        <input type="text" id="task7-input" placeholder="Tast inn koden her" inputmode="numeric">
-        <button onclick="validateTask7()">Lås opp</button>
-        <p id="task7-error" style="color: #ff6b6b; display: none;">Feil kode! Sjekk brikkene nøye.</p>
+        <h2>Oppgave 7: Inky</h2>
+
+        <div style="background: rgba(255, 255, 255, 0.08); border-left: 4px solid #ffd700; padding: 16px; margin: 15px auto; max-width: 460px; text-align: center; border-radius: 6px;">
+            <p style="font-size: 18px; margin: 0 0 8px 0; color: #ffd700;">
+                🧩 <strong>Hent oppgavearket hos spilleder!</strong>
+            </p>
+            <p style="font-size: 14px; margin: 0; color: #ddd;">
+                Løs brettet sammen med laget ditt for å finne koden.
+            </p>
+        </div>
+
+        <!-- 18-minutters nedteller -->
+        <div style="margin: 20px auto; padding: 12px; max-width: 260px; background: rgba(0, 0, 0, 0.4); border: 2px solid #ff6b6b; border-radius: 8px; box-shadow: 0 0 12px rgba(255, 107, 107, 0.2);">
+            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #aaa;">Gjenværende tid:</div>
+            <div id="task7-timer-display" style="font-size: 38px; font-weight: bold; color: #ff6b6b; font-family: monospace; margin: 4px 0;">18:00</div>
+            <div style="font-size: 11px; color: #888;">(Døren åpnes automatisk hvis tiden renner ut)</div>
+        </div>
+
+        <!-- Svarfelt -->
+        <div style="margin-top: 15px;">
+            <input type="text" id="task7-input" placeholder="Tast inn koden..." style="font-size: 18px; padding: 10px; width: 80%; max-width: 280px; text-align: center;">
+            <br><br>
+            <button onclick="validateTask7()">Lås opp</button>
+            <p id="task7-error" style="color: #ff6b6b; display: none; margin-top: 10px;">Feil kode! Sjekk utregningen på arket og prøv igjen.</p>
+        </div>
+
+        <!-- Timeout-beskjed hvis tiden går ut -->
+        <div id="task7-timeout-msg" style="display: none; margin-top: 15px; background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; padding: 10px; border-radius: 6px;">
+            <p style="color: #ff6b6b; font-weight: bold; margin: 0;">⏳ Tiden er ute! Låsen slipper taket automatisk...</p>
+        </div>
+
+        <!-- Suksess-boks -->
+        <div id="task7-success" style="display: none; margin-top: 20px;">
+            <p style="color: #4ade80; font-size: 20px; font-weight: bold;">🎉 Riktig løst! Koden er godkjent!</p>
+            <button onclick="advanceFrom('screen-task7')">Gå til Oppgave 8</button>
+        </div>
     </div>
 
     <!-- ========================================== -->

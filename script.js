@@ -476,7 +476,6 @@ function resetTask5() {
     startTimerLoop();
 }
 
-
 // ==========================================
 // OPPGAVE 6: FLAPPY SANTA SPILL-LOGIKK
 // ==========================================
@@ -485,13 +484,18 @@ let santaY, santaVelocity, santaGravity, santaJump;
 let pipes = [];
 let flappyScore = 0;
 let isFlappyRunning = false;
-let flappyAnimationId;
+let flappyAnimationId = null;
 let pipeTimer = 0;
+let flappyInitialized = false;
 
 function initFlappyCanvas() {
     canvas = document.getElementById('flappy-canvas');
     if (!canvas) return;
     ctx = canvas.getContext('2d');
+
+    // Hindrer at event listeners legges til flere ganger
+    if (flappyInitialized) return;
+    flappyInitialized = true;
 
     canvas.addEventListener('pointerdown', (e) => {
         e.preventDefault();
@@ -513,33 +517,47 @@ function flapSanta() {
 }
 
 function startFlappyGame() {
-    if (!canvas) initFlappyCanvas();
+    initFlappyCanvas();
 
     document.getElementById('flappy-overlay').style.display = 'none';
     document.getElementById('task6-success').style.display = 'none';
 
+    // 1. Dreper alltid eventuelle gamle løkker slik at farten ikke dobles
+    if (flappyAnimationId) {
+        cancelAnimationFrame(flappyAnimationId);
+        flappyAnimationId = null;
+    }
+
+    // 2. Balanserte verdier: nissen har god oppdrift og behagelig tyngdekraft
     santaY = 180;
     santaVelocity = 0;
-    santaGravity = 0.14;
-    santaJump = -3.5;
+    santaGravity = 0.16;   // Myk tyngdekraft
+    santaJump = -4.2;      // Responsivt og solid løft per trykk
     pipes = [];
     flappyScore = 0;
     pipeTimer = 0;
     isFlappyRunning = true;
 
-    cancelAnimationFrame(flappyAnimationId);
     flappyGameLoop();
 }
 
 function flappyGameLoop() {
     if (!isFlappyRunning) return;
 
+    // Fysikkoppdatering
     santaVelocity += santaGravity;
+
+    // Fartssperre: hindrer at fallfarten løper løpsk
+    if (santaVelocity > 4.5) {
+        santaVelocity = 4.5;
+    }
+
     santaY += santaVelocity;
 
+    // Oppretting av piper med jevne mellomrom
     pipeTimer++;
     if (pipeTimer % 95 === 0) {
-        const gap = 115;
+        const gap = 120; // God åpning å fly gjennom
         const minHeight = 40;
         const topHeight = Math.floor(Math.random() * (canvas.height - gap - minHeight * 2)) + minHeight;
         pipes.push({
@@ -550,6 +568,7 @@ function flappyGameLoop() {
         });
     }
 
+    // Flytting og kollisjonssjekk
     for (let i = 0; i < pipes.length; i++) {
         let p = pipes[i];
         p.x -= 1.8;
@@ -558,6 +577,7 @@ function flappyGameLoop() {
             p.passed = true;
             flappyScore++;
 
+            // Målet er 15 poeng
             if (flappyScore >= 15) {
                 winFlappyGame();
                 return;
@@ -565,7 +585,7 @@ function flappyGameLoop() {
         }
 
         const santaX = 50;
-        const santaRadius = 12;
+        const santaRadius = 11;
 
         if (santaX + santaRadius > p.x && santaX - santaRadius < p.x + 40) {
             if (santaY - santaRadius < p.top || santaY + santaRadius > p.bottom) {
@@ -577,6 +597,7 @@ function flappyGameLoop() {
 
     pipes = pipes.filter(p => p.x > -50);
 
+    // Kollisjon med tak eller bunn
     if (santaY > canvas.height - 15 || santaY < 10) {
         gameOverFlappy();
         return;
@@ -615,12 +636,20 @@ function drawFlappyScene() {
 
 function gameOverFlappy() {
     isFlappyRunning = false;
+    if (flappyAnimationId) {
+        cancelAnimationFrame(flappyAnimationId);
+        flappyAnimationId = null;
+    }
     document.getElementById('flappy-msg').innerHTML = `Du krasjet på ${flappyScore} poeng!<br>Prøv igjen!`;
     document.getElementById('flappy-overlay').style.display = 'flex';
 }
 
 function winFlappyGame() {
     isFlappyRunning = false;
+    if (flappyAnimationId) {
+        cancelAnimationFrame(flappyAnimationId);
+        flappyAnimationId = null;
+    }
     drawFlappyScene();
     document.getElementById('task6-success').style.display = 'block';
 }

@@ -241,35 +241,35 @@ async function validateTask3b() {
 
 
 // ==========================================
-// OPPGAVE 4A & 4B: FLAGG-SORTERING (EMOJIS)
+// OPPGAVE 4A & 4B: FLAGG-SORTERING (MELLOMNIVÅ)
 // ==========================================
 
-// SPOR A: Obskure flagg (Bhutan -> Nauru)
+// SPOR A: Mellomnivå (Hellas -> Uruguay)
 const flagsDataA = [
-    { id: 'BT', name: 'Bhutan',     flag: '🇧🇹' },
-    { id: 'DJ', name: 'Djibouti',   flag: '🇩🇯' },
-    { id: 'SZ', name: 'Eswatini',   flag: '🇸🇿' },
-    { id: 'GD', name: 'Grenada',    flag: '🇬🇩' },
-    { id: 'KI', name: 'Kiribati',   flag: '🇰🇮' },
-    { id: 'LS', name: 'Lesotho',    flag: '🇱🇸' },
-    { id: 'MR', name: 'Mauritania', flag: '🇲🇷' },
-    { id: 'NR', name: 'Nauru',      flag: '🇳🇷' }
+    { id: 'GR', name: 'Hellas',      flag: '🇬🇷' },
+    { id: 'IE', name: 'Irland',      flag: '🇮🇪' },
+    { id: 'JM', name: 'Jamaica',     flag: '🇯🇲' },
+    { id: 'HR', name: 'Kroatia',     flag: '🇭🇷' },
+    { id: 'MA', name: 'Marokko',     flag: '🇲🇦' },
+    { id: 'NZ', name: 'New Zealand', flag: '🇳🇿' },
+    { id: 'SN', name: 'Senegal',     flag: '🇸🇳' },
+    { id: 'UY', name: 'Uruguay',     flag: '🇺🇾' }
 ];
-const CORRECT_ORDER_4A = ['BT', 'DJ', 'SZ', 'GD', 'KI', 'LS', 'MR', 'NR'];
+const CORRECT_ORDER_4A = ['GR', 'IE', 'JM', 'HR', 'MA', 'NZ', 'SN', 'UY'];
 let currentFlagsA = [];
 
-// SPOR B: Obskure flagg (Belize -> Zimbabwe)
+// SPOR B: Mellomnivå (Chile -> Vietnam)
 const flagsDataB = [
-    { id: 'BZ', name: 'Belize',   flag: '🇧🇿' },
-    { id: 'KM', name: 'Komorene', flag: '🇰🇲' },
-    { id: 'MW', name: 'Malawi',   flag: '🇲🇼' },
-    { id: 'PW', name: 'Palau',    flag: '🇵🇼' },
-    { id: 'SR', name: 'Surinam',  flag: '🇸🇷' },
-    { id: 'TV', name: 'Tuvalu',   flag: '🇹🇻' },
-    { id: 'VU', name: 'Vanuatu',  flag: '🇻🇺' },
-    { id: 'ZW', name: 'Zimbabwe', flag: '🇿🇼' }
+    { id: 'CL', name: 'Chile',       flag: '🇨🇱' },
+    { id: 'EG', name: 'Egypt',       flag: '🇪🇬' },
+    { id: 'IS', name: 'Island',      flag: '🇮🇸' },
+    { id: 'KE', name: 'Kenya',       flag: '🇰🇪' },
+    { id: 'MX', name: 'Mexico',      flag: '🇲🇽' },
+    { id: 'PT', name: 'Portugal',    flag: '🇵🇹' },
+    { id: 'ZA', name: 'Sør-Afrika',  flag: '🇿🇦' },
+    { id: 'VN', name: 'Vietnam',     flag: '🇻🇳' }
 ];
-const CORRECT_ORDER_4B = ['BZ', 'KM', 'MW', 'PW', 'SR', 'TV', 'VU', 'ZW'];
+const CORRECT_ORDER_4B = ['CL', 'EG', 'IS', 'KE', 'MX', 'PT', 'ZA', 'VN'];
 let currentFlagsB = [];
 
 function renderFlagListUI(containerId, flagList, track) {

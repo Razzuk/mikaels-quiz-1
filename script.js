@@ -167,15 +167,15 @@ async function validateTask3b() {
     }
 }
 
-// Hashen for tallet 6770130840 (1969 * 9551 * 24 * 15)
-const HASH_A2 = 'a0f55f635a6f4c4fa6fd9a05f0b2be06f817a0e0bb83fc3cdd795f546f94657d';
+// Hashen for tallet 6205953270 (1969 * 9551 * 22 * 15)
+const HASH_A2 = 'c4f16f9588d88fd22cb8a4e68b7705acf945fe91a952460a3d85d6371bca911a';
 
 async function validateTask2a() {
     const inputEl = document.getElementById('task2a-input');
     const errorEl = document.getElementById('task2a-error');
     if (!inputEl) return;
 
-    // Fjerner eventuelle mellomrom (f.eks. om noen skriver 6 770 130 840)
+    // Fjerner eventuelle mellomrom (f.eks. om noen skriver 6 205 953 270)
     const val = inputEl.value.replace(/\s+/g, '');
     const hash = await sha256(val);
 
